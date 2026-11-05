@@ -14,6 +14,8 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 - Links inválidos ou longos demais para um QR legível são recusados com aviso.
 - Testes que leem o QR gerado (inclusive em 720p e 540p) e conferem o link caractere por caractere.
 - Regra de redação: sempre "pastor" por extenso, nunca "Pr.".
+- Regra de redação: erros de português do roteiro são corrigidos nas telas, sem mudar o sentido.
+- Roteiro de teste manual com gabarito em `tests/roteiros/`.
 
 ### Alterado
 
