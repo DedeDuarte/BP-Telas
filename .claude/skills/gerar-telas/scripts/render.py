@@ -108,6 +108,16 @@ LEGENDA_UMA_LINHA_MIN = 22      # prefere 1 linha se couber pelo menos neste tam
 LEGENDA_MAX_LINES = 2
 
 
+def fonte(font_path: Path, size: int) -> ImageFont.FreeTypeFont:
+    """Carrega a fonte sempre com o layout BASIC.
+
+    O Pillow usa o layout RAQM quando a libraqm existe (comum no Linux) e o BASIC quando
+    não existe (padrão no Windows). Os dois medem o texto de forma diferente, o que mudaria
+    quebras de linha e larguras entre os sistemas. Forçar o BASIC deixa as telas idênticas.
+    """
+    return ImageFont.truetype(str(font_path), size, layout_engine=ImageFont.Layout.BASIC)
+
+
 def slugify(texto: str) -> str:
     s = unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode()
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-") or "tela"
@@ -131,7 +141,7 @@ def quebrar(texto: str, font: ImageFont.FreeTypeFont, largura: int) -> list[str]
 def ajustar_corpo(texto: str, font_path: Path):
     largura = BODY_MAX_X - BODY_X
     for size in BODY_SIZES:
-        font = ImageFont.truetype(str(font_path), size)
+        font = fonte(font_path, size)
         linhas = quebrar(texto, font, largura)
         if len(linhas) <= BODY_MAX_LINES and all(font.getlength(l) <= largura for l in linhas):
             return font, linhas
@@ -184,7 +194,7 @@ def ajustar_legenda(texto: str, font_path: Path):
     """Uma linha se couber num tamanho bom; senão, até 2 linhas, reduzindo a fonte."""
     x0, _, x1, _ = LEGENDA_AREA
     largura = x1 - x0
-    fontes = [ImageFont.truetype(str(font_path), s) for s in LEGENDA_SIZES]
+    fontes = [fonte(font_path, s) for s in LEGENDA_SIZES]
     for font in fontes:
         if font.size >= LEGENDA_UMA_LINHA_MIN and font.getlength(texto) <= largura:
             return font, [texto]
@@ -227,7 +237,7 @@ def render_tela(titulo: str, corpo: str, font_path: Path, qr: dict | None = None
     d.rectangle(FAIXA, fill=BRANCO)
 
     # Título + barra com largura proporcional ao texto
-    f_tit = ImageFont.truetype(str(font_path), TITLE_SIZE)
+    f_tit = fonte(font_path, TITLE_SIZE)
     larg_tit = f_tit.getlength(titulo)
     bar_x1 = round(TITLE_X + larg_tit + TITLE_PAD_RIGHT)
     if bar_x1 > TITLE_MAX_X:

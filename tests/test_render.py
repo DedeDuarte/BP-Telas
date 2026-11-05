@@ -68,6 +68,10 @@ class TestRender(unittest.TestCase):
             return max(x for x in range(render.BAR_X0, 1600) if img.getpixel((x, y))[:3] == AZUL)
         self.assertLess(fim_barra("ASA"), fim_barra("Mutirão de Natal 2025"))
 
+    def test_fonte_usa_layout_basic(self):
+        # Garante telas idênticas no Windows (sem libraqm) e no Linux (com libraqm).
+        self.assertEqual(render.fonte(self.font, 30).layout_engine, render.ImageFont.Layout.BASIC)
+
     def test_slugify(self):
         self.assertEqual(render.slugify("Culto de Domingo!"), "culto-de-domingo")
         self.assertEqual(render.slugify("Mutirão Ação"), "mutirao-acao")
