@@ -64,6 +64,14 @@ Texto curto abaixo do QR dizendo **o que acontece ao escanear**, no imperativo:
   abreviado —, mesmo que o roteiro abrevie ou que o texto fique apertado (encurte outra parte).
 - Pode terminar com chamada curta: `Esperamos você!`, `Participe!`, `Inscreva-se com a equipe do MIB!`.
 
+**Português** (título, corpo e legenda do QR)
+- **Regra obrigatória:** o roteiro pode ter erros. Na tela, o português tem de estar correto:
+  concordância de gênero e número, acentuação, crase, ortografia e pontuação.
+  Ex.: "a última campori" → "o último campori"; "as 19h" → "às 19h"; "tranferência" → "transferência".
+- Corrija **sem mudar o sentido**: não troque nomes próprios, nomes de séries, datas, horários,
+  números ou valores. Se não der para saber o que o roteiro quis dizer, pergunte.
+- Não é preciso avisar cada correção ortográfica; a tabela de aprovação já mostra o texto final.
+
 Exemplo — roteiro, ponto 2 (≈90 palavras) → corpo:
 > AMANHÃ, ÀS 10H, O PASTOR JOSÉ ORLANDO ENCERRA A SÉRIE “CORAÇÃO E MENTE” COM A MENSAGEM “MENTE E CORAÇÃO SAUDÁVEIS”. ESPERAMOS VOCÊ!
 
