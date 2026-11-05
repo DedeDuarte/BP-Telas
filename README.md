@@ -28,23 +28,32 @@ nas telas de lower-third (PNG 1920×1080 transparente) usadas na transmissão.
 
 Ao receber o pedido do passo 1:
 
-1. Clonar o repositório numa pasta temporária.
+1. Clonar o repositório numa pasta temporária, só a versão atual:
+   `git clone --depth 1 https://github.com/DedeDuarte/BP-Telas.git <pasta temporária>`.
 2. Copiar a pasta `.claude/skills/gerar-telas/` para a pasta de skills do usuário:
    - Windows: `%USERPROFILE%\.claude\skills\gerar-telas\`
    - Linux: `~/.claude/skills/gerar-telas/`
 
    Se já existir uma versão instalada, substituí-la (atualização).
-3. Instalar as dependências:
+3. Garantir o Pillow (único requisito; se já estiver instalado, nada a fazer):
    - Windows: `py -m pip install -r %USERPROFILE%\.claude\skills\gerar-telas\requirements.txt`
    - Linux: `python3 -m pip install -r ~/.claude/skills/gerar-telas/requirements.txt`
 4. Apagar o clone temporário e avisar que a skill `gerar-telas` está disponível
    (pode ser preciso reiniciar o Claude Code).
 
+## Instalação no Claude App / claude.ai
+
+1. Baixe o `gerar-telas-X.Y.Z.zip` da [página de releases](https://github.com/DedeDuarte/BP-Telas/releases)
+   (ou compacte a pasta `.claude/skills/gerar-telas/`).
+2. No app: **Configurações → Capacidades**, ligue a execução de código e, em **Skills**, envie o ZIP.
+3. Num chat novo, cole o roteiro e peça as telas. As imagens vêm anexadas na resposta.
+
+Para remover: na mesma tela de Skills, desative ou exclua a skill.
+
 ## Requisitos
 
-- Windows (principal) ou Linux
-- Python 3.9+, Pillow e segno (`requirements.txt` dentro da skill)
-- Internet na primeira execução (download da fonte Open Sans Bold)
+- Claude Code (Windows ou Linux) ou Claude App / claude.ai
+- Python 3.9+ com Pillow — fontes e gerador de QR já vêm na skill; não precisa de internet
 
 ## Estrutura
 
@@ -83,4 +92,7 @@ py -m unittest discover tests
 ## Licença
 
 [MIT](LICENSE) — inclui o código e as imagens do repositório (logo e telas de exemplo).
-A fonte Open Sans não faz parte do repositório: é baixada do projeto oficial e usa a licença SIL OFL 1.1.
+Componentes de terceiros incluídos na skill, com suas próprias licenças:
+
+- Fonte Open Sans — SIL OFL 1.1 (`assets/fonts/OFL.txt`)
+- segno 1.6.6 (gerador de QR) — BSD-3-Clause (`scripts/vendor/segno/LICENSE`)
