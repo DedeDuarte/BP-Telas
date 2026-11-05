@@ -1,0 +1,2 @@
+-r .claude/skills/gerar-telas/requirements.txt
+zxing-cpp>=2.2

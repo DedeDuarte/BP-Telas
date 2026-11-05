@@ -73,5 +73,68 @@ class TestRender(unittest.TestCase):
         self.assertEqual(render.slugify("Mutirão Ação"), "mutirao-acao")
 
 
+try:
+    import zxingcpp  # leitor de QR, só para testes (requirements-dev.txt)
+except ImportError:
+    zxingcpp = None
+
+LINKS = [
+    "https://chat.whatsapp.com/KxY7aBcDeFgHiJkLmNoPq1",
+    "https://forms.gle/abcdEFGH1234",
+    "https://www.youtube.com/@iasdbrooklin/videos?view=0&sort=dd&shelf_id=1",
+    "http://exemplo.com.br/inscricao?evento=mutirao-natal&ano=2026",
+]
+
+
+class TestQR(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.font = ensure_font()
+
+    def tela(self, link, legenda="Entre na comunidade"):
+        return render.render_tela("Teste", "Corpo curto.", self.font, {"link": link, "legenda": legenda})
+
+    @unittest.skipUnless(zxingcpp, "zxing-cpp não instalado (py -m pip install -r requirements-dev.txt)")
+    def test_qr_le_o_link_exato_mesmo_com_logo(self):
+        # Lê a tela inteira, também reduzida (transmissão em 720p/540p): o conteúdo
+        # tem de ser o link original, caractere por caractere — sem redirecionamento.
+        for link in LINKS:
+            for tamanho in [(1920, 1080), (1280, 720), (960, 540)]:
+                with self.subTest(link=link, tamanho=tamanho):
+                    lidos = zxingcpp.read_barcodes(self.tela(link).convert("RGB").resize(tamanho))
+                    self.assertEqual([r.text for r in lidos], [link])
+
+    def test_qr_mesma_caixa_do_visitante(self):
+        x, y = render.QR_POS
+        w, h = render.QR_BLOCO
+        img = self.tela(LINKS[0])
+        for px in [(x + 2, y + 2), (x + w - 3, y + h - 3)]:   # cantos azuis
+            self.assertEqual(img.getpixel(px)[:3], AZUL)
+        self.assertEqual(img.getpixel((x - 3, y + 2))[3], 0)  # fora da caixa: transparente
+        self.assertEqual(img.getpixel((x + 2, y - 3))[3], 0)
+
+    def test_sem_qr_usa_visitante(self):
+        img = render.render_tela("Teste", "Corpo curto.", self.font)
+        visitante = render.Image.open(render.ASSETS / "qr-visitante.png").convert("RGBA")
+        x, y = render.QR_POS
+        recorte = img.crop((x, y, x + visitante.width, y + visitante.height))
+        self.assertEqual(list(recorte.getdata()), list(visitante.getdata()))
+
+    def test_link_invalido(self):
+        for link in ["chat.whatsapp.com/abc", "ftp://x.com/a", "https://x.com/a b", ""]:
+            with self.subTest(link=link), self.assertRaises(ValueError):
+                self.tela(link)
+
+    def test_link_longo_demais(self):
+        with self.assertRaises(ValueError):
+            self.tela("https://exemplo.com/" + "a" * 200)
+
+    def test_legenda_obrigatoria_e_curta(self):
+        with self.assertRaises(ValueError):
+            self.tela(LINKS[0], legenda="")
+        with self.assertRaises(ValueError):
+            self.tela(LINKS[0], legenda="texto muito comprido " * 6)
+
+
 if __name__ == "__main__":
     unittest.main()
