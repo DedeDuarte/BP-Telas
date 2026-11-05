@@ -147,6 +147,17 @@ class TestQR(unittest.TestCase):
         recorte = img.crop((x, y, x + visitante.width, y + visitante.height))
         self.assertEqual(recorte.tobytes(), visitante.tobytes())
 
+    def test_usa_segno_embutido(self):
+        # A skill não pode depender de pip/internet (Claude App): o segno vem de scripts/vendor.
+        import segno
+        vendor = Path(render.__file__).resolve().parent / "vendor"
+        self.assertTrue(Path(segno.__file__).resolve().is_relative_to(vendor), segno.__file__)
+
+    def test_fontes_embutidas(self):
+        fontes = Path(render.ASSETS) / "fonts"
+        for nome in ["OpenSans-Bold.ttf", "OpenSans-ExtraBold.ttf", "OFL.txt"]:
+            self.assertTrue((fontes / nome).is_file(), nome)
+
     def test_link_invalido(self):
         for link in ["chat.whatsapp.com/abc", "ftp://x.com/a", "https://x.com/a b", ""]:
             with self.subTest(link=link), self.assertRaises(ValueError):
