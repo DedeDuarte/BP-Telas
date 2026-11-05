@@ -5,7 +5,7 @@ Formato do JSON:
       "data": "2026-10-31",
       "telas": [
         {"arquivo": "02-culto-domingo", "titulo": "Série Coração e Mente",
-         "corpo": "Amanhã, às 10h, o Pr. José Orlando ..."}
+         "corpo": "Amanhã, às 10h, o pastor José Orlando ..."}
       ]
     }
 
