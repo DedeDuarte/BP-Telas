@@ -8,7 +8,10 @@ description: Gera as telas (lower-thirds PNG 1920x1080 com fundo transparente) d
 Transforma cada ponto informativo de um roteiro em uma tela (overlay transparente) no padrão visual da IASD Brooklin.
 
 Nos comandos abaixo, `<skill>` é a pasta onde está este `SKILL.md`. O uso principal é no
-**Windows** (`py`; se não existir, `python`); no Linux use `python3`.
+**Windows** (`py`; se não existir, `python`); no Linux, no Claude App e no claude.ai use `python3`.
+
+**Requisito único: Pillow.** Fontes e gerador de QR (`segno`) já vêm dentro da skill — nada é
+baixado nem instalado com pip. Funciona sem internet (ex.: ambiente do Claude App).
 
 ## Entrada
 
@@ -20,6 +23,11 @@ Um roteiro em texto, colado na conversa ou em um arquivo. Formato esperado em
 Por padrão, na pasta **Downloads** do usuário: `Downloads/Telas AAAA-MM-DD/`, contendo um PNG por
 ponto do roteiro (`NN-slug.png`, na ordem do roteiro), o `telas.json` com os textos usados e o
 `_preview.jpg` de conferência. Se o usuário pedir outra pasta, use `-o "<pasta>"`.
+
+**Sem pasta Downloads** (Claude App, claude.ai, sessões na nuvem): o script usa
+`/mnt/user-data/outputs/Telas AAAA-MM-DD/` se existir, senão a pasta atual. Nesse caso os arquivos
+**não** estão no computador do usuário: ao final, **entregue os PNGs** (e o `_preview.jpg`) pelo
+recurso de compartilhar/anexar arquivos do ambiente, para ele baixar.
 
 ## Fluxo
 
@@ -43,12 +51,14 @@ ponto do roteiro (`NN-slug.png`, na ordem do roteiro), o `telas.json` com os tex
 5. **Salvar o JSON** aprovado como `telas.json` dentro dessa pasta (formato em
    [examples/roteiros/2026-10-31.json](examples/roteiros/2026-10-31.json)).
 6. **Renderizar**: `py <skill>/scripts/render.py "<pasta>/telas.json"`.
-   - Falta o Pillow ou o segno → `py -m pip install -r <skill>/requirements.txt` e rode de novo.
+   - Falta o Pillow → `py -m pip install -r <skill>/requirements.txt` e rode de novo.
    - Link inválido ou longo demais → fale com o usuário (não altere o link por conta própria).
-   - A fonte Open Sans Bold é baixada automaticamente na 1ª vez (precisa de internet).
    - Corpo ou título longo demais → encurte o texto no JSON e rode de novo.
+   - **Nunca troque a fonte** por outra nem gere as telas por outro meio: se o script falhar,
+     explique o erro ao usuário.
 7. **Conferir visualmente** abrindo `_preview.jpg` (todas as telas sobre fundo cinza — sobre
-   branco a faixa branca do corpo fica invisível) e informar ao usuário a pasta gerada.
+   branco a faixa branca do corpo fica invisível) e informar ao usuário a pasta gerada — ou,
+   sem pasta Downloads, entregar os arquivos (ver **Saída**).
 
 ## Assets
 
@@ -57,7 +67,8 @@ ponto do roteiro (`NN-slug.png`, na ordem do roteiro), o `telas.json` com os tex
 | `assets/logo-brooklin.png` | Logo isolado (20,775 → 185,972) |
 | `assets/qr-visitante.png` | Bloco QR padrão "visitando pela 1ª vez" (1617,608 → 1896,971). Arquivo fixo gerado por `scripts/gerar_qr_visitante.py` — não edite à mão |
 | `assets/logo-qr.png` | Logo usado no centro dos QR |
-| `assets/fonts/` | Open Sans Bold e ExtraBold, baixadas sob demanda (não versionadas) |
+| `assets/fonts/` | Open Sans Bold e ExtraBold (licença em `OFL.txt`) |
+| `scripts/vendor/segno/` | Cópia do gerador de QR `segno` 1.6.6 (licença BSD em `LICENSE`) |
 | `assets/modelo.png` | **Só referência histórica — não use na skill.** O script desenha tudo sozinho. |
 
 ## Exemplos
