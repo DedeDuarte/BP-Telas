@@ -1,3 +1,5 @@
+roteiros/*
+!roteiros/.gitkeep
 saida/*
 !saida/.gitkeep
 .claude/skills/gerar-telas/assets/fonts/
