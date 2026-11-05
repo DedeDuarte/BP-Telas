@@ -1,0 +1,37 @@
+# Tela padrão e regras de redação
+
+Existe **um único tipo de tela**: título na barra azul + corpo em texto azul + bloco QR de visitante
+(ver [design-spec.md](design-spec.md)). Exemplos: todos os PNGs de `examples/telas/`.
+
+## Quais pontos do roteiro viram tela
+
+**Todos.** O usuário já envia o roteiro limpo, só com os pontos que devem virar tela.
+Exceção: se aparecer um ponto que claramente é só fala do locutor (abertura, encerramento,
+"esta edição chegou ao fim"), sinalize-o na tabela de aprovação como "sem tela?" e pergunte.
+
+## QR code
+
+Sempre o mesmo: `assets/qr-visitante.png`. Mesmo que o roteiro diga "leia o QR Code na tela"
+(ex.: comunidade do WhatsApp), não troque o QR — coloque o telefone/contato no corpo.
+(Gerar QR específico por tela é uma melhoria futura.)
+
+## Redação
+
+**Título** (barra azul)
+- **Regra obrigatória:** pontos sobre o culto de domingo ou o culto de quarta têm título
+  `CULTO DE DOMINGO` ou `CULTO DE QUARTA` — nunca o nome da série, do pregador ou da classe.
+  O nome da série vai no corpo.
+- Demais pontos: 1 a 4 palavras, nome do evento/ministério. Ex.: `ADOTE UM DESBRAVADOR`, `SECRETARIA`.
+
+**Corpo** (texto azul)
+- Até ~140 caracteres, para caber em 2 linhas sem reduzir demais a fonte.
+  O script coloca em CAIXA ALTA, quebra as linhas e reduz a fonte (34 → 26 px) se precisar.
+- Só o essencial: o quê + quando + onde/contato. Corte a narrativa do locutor.
+- Horários no formato `10h`, `19h30`; telefones no formato `(11) 94914-7174`.
+- Pode terminar com chamada curta: `Esperamos você!`, `Participe!`, `Inscreva-se com a equipe do MIB!`.
+
+Exemplo — roteiro, ponto 2 (≈90 palavras) → corpo:
+> AMANHÃ, ÀS 10H, O PR. JOSÉ ORLANDO ENCERRA A SÉRIE “CORAÇÃO E MENTE” COM A MENSAGEM “MENTE E CORAÇÃO SAUDÁVEIS”. ESPERAMOS VOCÊ!
+
+Exemplo completo (roteiro → JSON): [examples/roteiros/2025-10-31.txt](../examples/roteiros/2025-10-31.txt)
+→ [examples/roteiros/2025-10-31.json](../examples/roteiros/2025-10-31.json).
