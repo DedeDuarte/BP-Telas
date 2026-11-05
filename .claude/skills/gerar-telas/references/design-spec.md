@@ -35,4 +35,19 @@ Os valores exatos usados pelo renderizador estão no topo de `scripts/render.py`
 | Texto do título | x≈228, centro vertical da barra (y≈819) | |
 | Faixa branca do corpo | 205, 884 → 1593, 971 | desenhada pelo código, **opaca**, fixa (largura não varia) |
 | Corpo | x=228, 2 linhas dentro da faixa branca | limite direito 1570 px |
-| Bloco QR | 1617, 608 → 1896, 971 | `assets/qr-visitante.png`, fixo |
+| Bloco QR | 1617, 608 → 1896, 971 | `assets/qr-visitante.png` ou QR personalizado (abaixo) |
+
+## Bloco de QR personalizado
+
+Mesma caixa do QR de visitante (279 × 363 px em 1617, 608), desenhada pelo código
+(`render_bloco_qr` em `scripts/render.py`). Coordenadas relativas ao canto da caixa:
+
+| Elemento | Caixa | Observação |
+|---|---|---|
+| Caixa | 0, 0 → 279, 363 | `azul` |
+| Área branca do código | 7, 10 → 271, 274 (264 × 264) | 1 módulo de margem branca |
+| Código QR | dentro da área branca | gerado com `segno`, correção de erro **H** (30%), link exato |
+| Logo central | ~24% da altura do código | `assets/logo-brooklin.png` com 1 módulo de respiro branco |
+| Legenda | 10, 280 → 269, 356 | `branco`, Open Sans Bold 24→16 px, até 2 linhas, centralizada |
+
+Módulo mínimo de 4 px: links que exigem um QR mais denso são recusados (ilegíveis na transmissão).

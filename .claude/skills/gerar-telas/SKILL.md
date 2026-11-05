@@ -1,6 +1,6 @@
 ---
 name: gerar-telas
-description: Gera as telas (lower-thirds PNG 1920x1080 com fundo transparente) do informativo "Brooklin em Pauta" da IASD Brooklin a partir de um roteiro de avisos. Use quando o usuário colar ou apontar um roteiro do Brooklin em Pauta, pedir "telas", "GCs", "lower thirds" ou "artes dos avisos" da igreja, ou quiser transformar os pontos de um roteiro em telas no padrão do Modelo.
+description: Gera as telas (lower-thirds PNG 1920x1080 com fundo transparente) do informativo "Brooklin em Pauta" da IASD Brooklin a partir de um roteiro de avisos, com QR code personalizado (link direto, logo no centro) quando o usuário passar links. Use quando o usuário colar ou apontar um roteiro do Brooklin em Pauta, pedir "telas", "GCs", "lower thirds" ou "artes dos avisos" da igreja, ou quiser transformar os pontos de um roteiro em telas no padrão do Modelo.
 ---
 
 # Gerar Telas — Brooklin em Pauta
@@ -31,13 +31,19 @@ ponto do roteiro (`NN-slug.png`, na ordem do roteiro), o `telas.json` com os tex
    [references/tipos-de-tela.md](references/tipos-de-tela.md#redação): título curto, corpo de
    até ~140 caracteres só com a informação acionável. **Cultos de domingo e de quarta têm
    sempre o título `CULTO DE DOMINGO` / `CULTO DE QUARTA`.**
-3. **Mostrar ao usuário a tabela de telas** (nº, título, corpo) e esperar aprovação.
+   **Links de QR:** se o usuário passou links (dentro do ponto ou no fim, como `link do 3: <url>`),
+   o ponto correspondente ganha QR personalizado com legenda — regras em
+   [references/tipos-de-tela.md](references/tipos-de-tela.md#qr-code). Use o link **exatamente**
+   como foi passado; nunca encurte nem troque.
+3. **Mostrar ao usuário a tabela de telas** (nº, título, corpo, QR) e esperar aprovação. Na
+   coluna QR: `visitante` ou o link completo + a legenda proposta.
 4. **Criar a pasta da edição**: `py <skill>/scripts/render.py --pasta AAAA-MM-DD` — o comando
    imprime o caminho (ex.: `C:\Users\Fulano\Downloads\Telas 2026-10-31`).
 5. **Salvar o JSON** aprovado como `telas.json` dentro dessa pasta (formato em
    [examples/roteiros/2026-10-31.json](examples/roteiros/2026-10-31.json)).
 6. **Renderizar**: `py <skill>/scripts/render.py "<pasta>/telas.json"`.
-   - Falta o Pillow → `py -m pip install -r <skill>/requirements.txt` e rode de novo.
+   - Falta o Pillow ou o segno → `py -m pip install -r <skill>/requirements.txt` e rode de novo.
+   - Link inválido ou longo demais → fale com o usuário (não altere o link por conta própria).
    - A fonte Open Sans Bold é baixada automaticamente na 1ª vez (precisa de internet).
    - Corpo ou título longo demais → encurte o texto no JSON e rode de novo.
 7. **Conferir visualmente** abrindo `_preview.jpg` (todas as telas sobre fundo cinza — sobre

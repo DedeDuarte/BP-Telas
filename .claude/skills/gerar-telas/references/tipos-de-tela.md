@@ -1,6 +1,6 @@
 # Tela padrão e regras de redação
 
-Existe **um único tipo de tela**: título na barra azul + corpo em texto azul + bloco QR de visitante
+Existe **um único tipo de tela**: título na barra azul + corpo em texto azul + bloco QR
 (ver [design-spec.md](design-spec.md)). Exemplos: todos os PNGs de `examples/telas/`.
 
 ## Quais pontos do roteiro viram tela
@@ -11,9 +11,41 @@ Exceção: se aparecer um ponto que claramente é só fala do locutor (abertura,
 
 ## QR code
 
-Sempre o mesmo: `assets/qr-visitante.png`. Mesmo que o roteiro diga "leia o QR Code na tela"
-(ex.: comunidade do WhatsApp), não troque o QR — coloque o telefone/contato no corpo.
-(Gerar QR específico por tela é uma melhoria futura.)
+**Padrão:** o QR de visitante (`assets/qr-visitante.png`). Use-o em toda tela que não tenha link.
+
+**QR personalizado:** quando o usuário passar um link para um ponto, a tela ganha um QR gerado
+com esse link, o logo da igreja no centro e uma legenda. No JSON: `"qr": {"link": ..., "legenda": ...}`.
+
+### De onde vêm os links
+
+O usuário pode passar o link de duas formas:
+
+- **Dentro do ponto** do roteiro (o link aparece no texto do item `3.`) → vale para o ponto 3.
+- **No final do pedido**, indicando o número: `link do 3: https://...` (aceite variações como
+  `link 3:`, `3 →`, `ponto 3: https://...`) → vale para o ponto 3 do roteiro.
+
+Se um link não deixar claro a qual ponto pertence, **pergunte** — nunca adivinhe.
+O número é sempre o do roteiro, não o da ordem das telas.
+
+### Regras do link (obrigatórias)
+
+- Use o link **exatamente** como o usuário escreveu: não encurte, não troque por bit.ly,
+  não adicione parâmetros, não "corrija". O QR precisa apontar direto para o destino.
+- O script só aceita `http://` ou `https://`. Se o usuário mandar sem (ex.: `chat.whatsapp.com/abc`),
+  pergunte antes de completar com `https://`.
+- Links muito longos (~100+ caracteres) geram QR ilegível e o script recusa: avise o usuário e
+  peça um link mais curto **do próprio serviço** (ex.: o link curto oficial do Google Forms).
+
+### Legenda
+
+Texto curto abaixo do QR dizendo **o que acontece ao escanear**, no imperativo:
+`ENTRE NA COMUNIDADE`, `FAÇA SUA INSCRIÇÃO`, `ASSISTA NO YOUTUBE`, `CONTRIBUA AQUI`.
+
+- Até 2 linhas curtas (~20 caracteres por linha); o script reduz a fonte se precisar.
+- Não repita o título da tela; não escreva o link.
+- Com QR personalizado, o corpo pode dizer "leia o QR Code" — é coerente com a tela.
+- Sem QR personalizado, o corpo **não** deve mandar ler QR (o da tela é o de visitante):
+  use o telefone/contato no corpo.
 
 ## Redação
 
