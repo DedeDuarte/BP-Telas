@@ -1,5 +1,8 @@
 """Garante que a fonte Open Sans esteja disponível localmente (Bold e ExtraBold).
 
+As fontes já vêm dentro da skill (assets/fonts/, licença SIL OFL 1.1 em OFL.txt), então
+nada é baixado no uso normal. O download abaixo só acontece se um arquivo estiver faltando.
+
 Uso como módulo:
     from fonts import ensure_font
     ensure_font()               # Path para OpenSans-Bold.ttf (título e corpo)

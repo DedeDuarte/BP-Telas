@@ -1,6 +1,5 @@
 roteiros/*
 !roteiros/.gitkeep
-.claude/skills/gerar-telas/assets/fonts/
 __pycache__/
 .venv/
 saida/
