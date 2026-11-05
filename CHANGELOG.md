@@ -6,6 +6,11 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 
 ## [Não publicado]
 
+## [0.2.0] - 2026-11-05
+
+> **Atualizando do 0.1.0:** reinstale a skill (peça ao Claude de novo com o link do repositório).
+> A nova dependência `segno` é instalada junto; sem ela, telas com QR personalizado dão erro.
+
 ### Adicionado
 
 - QR code personalizado por tela: basta passar o link junto do ponto ou no fim do pedido
@@ -44,5 +49,6 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 - Suporte a Windows (prioritário) e Linux, com testes automáticos nos dois sistemas.
 - Licença MIT.
 
-[Não publicado]: https://github.com/DedeDuarte/BP-Telas/compare/v0.1.0...HEAD
+[Não publicado]: https://github.com/DedeDuarte/BP-Telas/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/DedeDuarte/BP-Telas/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/DedeDuarte/BP-Telas/releases/tag/v0.1.0
