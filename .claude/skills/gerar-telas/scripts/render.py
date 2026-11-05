@@ -9,17 +9,21 @@ Formato do JSON:
       ]
     }
 
-Uso (Windows):
-    py scripts\\render.py telas.json            # saída em saida\\<data>\\
-    py scripts\\render.py telas.json -o pasta   # saída em pasta\\
-Uso (Linux):
-    python3 scripts/render.py telas.json
+Pasta de saída padrão: <Downloads do usuário>/Telas <data>/
+
+Uso (Windows; no Linux troque `py` por `python3`):
+    py scripts\\render.py --pasta 2026-10-31     # cria e mostra a pasta padrão da edição
+    py scripts\\render.py telas.json             # gera em Downloads\\Telas <data>\\
+    py scripts\\render.py telas.json -o pasta    # gera em outra pasta
 """
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
+import shutil
+import subprocess
 import sys
 import unicodedata
 from pathlib import Path
@@ -35,14 +39,39 @@ try:
     from PIL import Image, ImageDraw, ImageFont
 except ImportError:
     _py = "py" if sys.platform == "win32" else "python3"
-    sys.exit(f"Pillow não está instalado. Rode:  {_py} -m pip install -r requirements.txt")
+    sys.exit(f"Pillow não está instalado. Rode:  {_py} -m pip install pillow")
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fonts import ensure_font  # noqa: E402
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
 ASSETS = SKILL_DIR / "assets"
-PROJECT_DIR = SKILL_DIR.parent.parent.parent  # BP_Telas/
+
+
+def pasta_downloads() -> Path:
+    """Pasta Downloads real do usuário (respeita redirecionamento/idioma do sistema)."""
+    if sys.platform == "win32":
+        try:
+            import winreg
+            chave = r"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders"
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, chave) as k:
+                valor, _ = winreg.QueryValueEx(k, "{374DE290-123F-4655-A0B3-A3D3A2BFC2E0}")
+            return Path(os.path.expandvars(valor))
+        except OSError:
+            pass
+    elif shutil.which("xdg-user-dir"):
+        try:
+            r = subprocess.run(["xdg-user-dir", "DOWNLOAD"], capture_output=True, text=True, timeout=5)
+            caminho = Path(r.stdout.strip())
+            if r.returncode == 0 and caminho.is_absolute() and caminho != Path.home():
+                return caminho
+        except (OSError, subprocess.SubprocessError):
+            pass
+    return Path.home() / "Downloads"
+
+
+def pasta_padrao(data: str) -> Path:
+    return pasta_downloads() / f"Telas {data}"
 
 # ---- Especificação (ver references/design-spec.md) ----
 W, H = 1920, 1080
@@ -127,14 +156,27 @@ def render_tela(titulo: str, corpo: str, font_path: Path) -> Image.Image:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("json", type=Path)
-    ap.add_argument("-o", "--saida", type=Path)
+    ap.add_argument("json", type=Path, nargs="?", help="JSON com as telas")
+    ap.add_argument("-o", "--saida", type=Path, help="pasta de saída (padrão: Downloads/Telas <data>)")
+    ap.add_argument("--pasta", metavar="AAAA-MM-DD", help="só cria e mostra a pasta padrão da edição")
     args = ap.parse_args(argv)
+
+    if args.pasta:
+        pasta = pasta_padrao(args.pasta)
+        pasta.mkdir(parents=True, exist_ok=True)
+        print(pasta)
+        return 0
+    if not args.json:
+        ap.error("informe o JSON das telas ou --pasta AAAA-MM-DD")
 
     # utf-8-sig: aceita JSON salvo pelo Bloco de Notas do Windows (com BOM)
     dados = json.loads(args.json.read_text(encoding="utf-8-sig"))
-    saida = args.saida or PROJECT_DIR / "saida" / dados.get("data", "sem-data")
+    saida = args.saida or pasta_padrao(dados.get("data", "sem-data"))
     saida.mkdir(parents=True, exist_ok=True)
+    # Guarda os textos usados junto das telas, para refazer/ajustar depois.
+    registro = saida / "telas.json"
+    if args.json.resolve() != registro.resolve():
+        shutil.copyfile(args.json, registro)
     font_path = ensure_font()
 
     erros, geradas = 0, []
