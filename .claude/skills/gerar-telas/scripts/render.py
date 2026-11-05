@@ -100,9 +100,11 @@ QR_BLOCO = (279, 363)
 QR_AREA = (7, 10, 264)          # x, y e lado da área branca onde fica o código
 QR_ZONA = 1                     # margem branca em módulos (a caixa azul completa o respiro)
 QR_MODULO_MIN = 4               # px por módulo; abaixo disso fica difícil de ler na transmissão
-QR_LOGO_ALTURA = 0.24           # altura do logo central em relação ao código
+QR_LOGO_QUADRADO = 0.28         # lado do quadrado branco central em relação ao código
+QR_LOGO_PREENCHE = 0.86         # quanto do quadrado o logo ocupa (o resto é respiro)
 LEGENDA_AREA = (10, 280, 269, 356)  # x0, y0, x1, y1 da legenda abaixo do código
-LEGENDA_SIZES = range(24, 15, -1)
+LEGENDA_SIZES = range(26, 17, -1)
+LEGENDA_UMA_LINHA_MIN = 22      # prefere 1 linha se couber pelo menos neste tamanho
 LEGENDA_MAX_LINES = 2
 
 
@@ -148,8 +150,9 @@ def gerar_codigo_qr(link: str) -> Image.Image:
         _py = "py" if sys.platform == "win32" else "python3"
         sys.exit(f"segno não está instalado. Rode:  {_py} -m pip install segno")
 
-    # Nível H (30% de redundância) para o logo central não atrapalhar a leitura.
-    qr = segno.make(link, error="h", micro=False, boost_error=False)
+    # Nível Q (25% de redundância): cobre o logo central com folga e gera menos módulos
+    # que o H, deixando os quadradinhos maiores. (M falha com logo um pouco maior.)
+    qr = segno.make(link, error="q", micro=False, boost_error=False)
     n = qr.symbol_size(border=0)[0]
     _, _, lado = QR_AREA
     # Módulo fracionário: o código preenche a área branca como no QR original.
@@ -166,30 +169,34 @@ def gerar_codigo_qr(link: str) -> Image.Image:
             if escuro:
                 d.rectangle([pos(x), pos(y), pos(x + 1) - 1, pos(y + 1) - 1], fill=(0, 0, 0, 255))
 
-    # Logo no centro, com respiro branco de 1 módulo
-    logo = Image.open(ASSETS / "logo-brooklin.png").convert("RGBA")
-    alt = round(n * modulo * QR_LOGO_ALTURA)
-    larg = round(alt * logo.width / logo.height)
-    logo = logo.resize((larg, alt), Image.LANCZOS)
-    lx, ly = (lado - larg) // 2, (lado - alt) // 2
-    m = round(modulo)
-    d.rectangle([lx - m, ly - m, lx + larg + m - 1, ly + alt + m - 1], fill=BRANCO)
-    img.alpha_composite(logo, (lx, ly))
+    # Logo no centro: quadrado branco 1:1 com o logo centralizado dentro dele
+    quadrado = round(n * modulo * QR_LOGO_QUADRADO)
+    q0 = (lado - quadrado) // 2
+    d.rectangle([q0, q0, q0 + quadrado - 1, q0 + quadrado - 1], fill=BRANCO)
+    logo = Image.open(ASSETS / "logo-qr.png").convert("RGBA")
+    logo = logo.crop(logo.getbbox())  # remove a sobra transparente do arquivo
+    logo.thumbnail((round(quadrado * QR_LOGO_PREENCHE),) * 2, Image.LANCZOS)
+    img.alpha_composite(logo, ((lado - logo.width) // 2, (lado - logo.height) // 2))
     return img
 
 
 def ajustar_legenda(texto: str, font_path: Path):
+    """Uma linha se couber num tamanho bom; senão, até 2 linhas, reduzindo a fonte."""
     x0, _, x1, _ = LEGENDA_AREA
-    for size in LEGENDA_SIZES:
-        font = ImageFont.truetype(str(font_path), size)
-        linhas = quebrar(texto, font, x1 - x0)
-        if len(linhas) <= LEGENDA_MAX_LINES and all(font.getlength(l) <= x1 - x0 for l in linhas):
+    largura = x1 - x0
+    fontes = [ImageFont.truetype(str(font_path), s) for s in LEGENDA_SIZES]
+    for font in fontes:
+        if font.size >= LEGENDA_UMA_LINHA_MIN and font.getlength(texto) <= largura:
+            return font, [texto]
+    for font in fontes:
+        linhas = quebrar(texto, font, largura)
+        if len(linhas) <= LEGENDA_MAX_LINES and all(font.getlength(l) <= largura for l in linhas):
             return font, linhas
     raise ValueError(f"Legenda do QR longa demais para {LEGENDA_MAX_LINES} linhas: {texto!r}")
 
 
-def render_bloco_qr(link: str, legenda: str, font_path: Path) -> Image.Image:
-    """Bloco no mesmo formato do qr-visitante.png: caixa azul, QR e legenda branca."""
+def render_bloco_qr(link: str, legenda: str) -> Image.Image:
+    """Bloco no mesmo formato do QR de visitante: caixa azul, QR e legenda branca (ExtraBold)."""
     legenda = " ".join((legenda or "").split()).upper()
     if not legenda:
         raise ValueError(f"QR sem legenda: {link!r}")
@@ -197,7 +204,7 @@ def render_bloco_qr(link: str, legenda: str, font_path: Path) -> Image.Image:
     ax, ay, _ = QR_AREA
     bloco.alpha_composite(gerar_codigo_qr(link), (ax, ay))
 
-    font, linhas = ajustar_legenda(legenda, font_path)
+    font, linhas = ajustar_legenda(legenda, ensure_font("ExtraBold"))
     x0, y0, x1, y1 = LEGENDA_AREA
     passo = font.size * 1.2
     cy = (y0 + y1) / 2 - passo * (len(linhas) - 1) / 2
@@ -213,7 +220,7 @@ def render_tela(titulo: str, corpo: str, font_path: Path, qr: dict | None = None
     img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     img.alpha_composite(Image.open(ASSETS / "logo-brooklin.png").convert("RGBA"), LOGO_POS)
     if qr:
-        img.alpha_composite(render_bloco_qr(qr.get("link"), qr.get("legenda"), font_path), QR_POS)
+        img.alpha_composite(render_bloco_qr(qr.get("link"), qr.get("legenda")), QR_POS)
     else:
         img.alpha_composite(Image.open(ASSETS / "qr-visitante.png").convert("RGBA"), QR_POS)
     d = ImageDraw.Draw(img)
