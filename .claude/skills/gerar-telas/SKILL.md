@@ -30,7 +30,8 @@ ponto do roteiro (`NN-slug.png`, na ordem do roteiro), o `telas.json` com os tex
 2. **Redigir título e corpo** de cada tela seguindo as regras de
    [references/tipos-de-tela.md](references/tipos-de-tela.md#redação): título curto, corpo de
    até ~140 caracteres só com a informação acionável. **Cultos de domingo e de quarta têm
-   sempre o título `CULTO DE DOMINGO` / `CULTO DE QUARTA`.**
+   sempre o título `CULTO DE DOMINGO` / `CULTO DE QUARTA`. Escreva sempre `pastor` por extenso,
+   nunca `Pr.`**
    **Links de QR:** se o usuário passou links (dentro do ponto ou no fim, como `link do 3: <url>`),
    o ponto correspondente ganha QR personalizado com legenda — regras em
    [references/tipos-de-tela.md](references/tipos-de-tela.md#qr-code). Use o link **exatamente**

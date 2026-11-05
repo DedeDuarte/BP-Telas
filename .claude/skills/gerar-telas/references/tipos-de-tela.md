@@ -60,6 +60,8 @@ Texto curto abaixo do QR dizendo **o que acontece ao escanear**, no imperativo:
   O script coloca em CAIXA ALTA, quebra as linhas e reduz a fonte (34 → 26 px) se precisar.
 - Só o essencial: o quê + quando + onde/contato. Corte a narrativa do locutor.
 - Horários no formato `10h`, `19h30`; telefones no formato `(11) 94914-7174`.
+- **Regra obrigatória:** escreva sempre `pastor` por extenso — nunca `Pr.`, `pr.` ou `Pastor(a)`
+  abreviado —, mesmo que o roteiro abrevie ou que o texto fique apertado (encurte outra parte).
 - Pode terminar com chamada curta: `Esperamos você!`, `Participe!`, `Inscreva-se com a equipe do MIB!`.
 
 Exemplo — roteiro, ponto 2 (≈90 palavras) → corpo:
