@@ -24,6 +24,11 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 - QR com quadradinhos maiores, logo novo dentro de um quadrado branco e legenda em Open Sans
   ExtraBold, em uma linha quando couber.
 
+### Corrigido
+
+- Telas geradas no Windows e no Linux agora são idênticas (antes o texto podia ser medido
+  de forma diferente e mudar quebras de linha e larguras).
+
 ## [0.1.0] - 2026-11-05
 
 ### Adicionado
