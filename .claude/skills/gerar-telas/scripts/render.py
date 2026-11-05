@@ -95,6 +95,16 @@ BODY_SIZES = range(34, 25, -1)  # exemplos usam 28–35px; tenta do maior para o
 BODY_LINE_FACTOR = 1.38
 BODY_MAX_LINES = 2
 
+# Bloco de QR personalizado (coordenadas relativas a QR_POS; mesmas medidas do qr-visitante.png)
+QR_BLOCO = (279, 363)
+QR_AREA = (7, 10, 264)          # x, y e lado da área branca onde fica o código
+QR_ZONA = 1                     # margem branca em módulos (a caixa azul completa o respiro)
+QR_MODULO_MIN = 4               # px por módulo; abaixo disso fica difícil de ler na transmissão
+QR_LOGO_ALTURA = 0.24           # altura do logo central em relação ao código
+LEGENDA_AREA = (10, 280, 269, 356)  # x0, y0, x1, y1 da legenda abaixo do código
+LEGENDA_SIZES = range(24, 15, -1)
+LEGENDA_MAX_LINES = 2
+
 
 def slugify(texto: str) -> str:
     s = unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode()
@@ -128,11 +138,84 @@ def ajustar_corpo(texto: str, font_path: Path):
     )
 
 
-def render_tela(titulo: str, corpo: str, font_path: Path) -> Image.Image:
+def gerar_codigo_qr(link: str) -> Image.Image:
+    """QR estático com o link exato (sem encurtador/redirecionamento) e o logo no centro."""
+    if not re.fullmatch(r"https?://\S+", link or ""):
+        raise ValueError(f"Link inválido (precisa começar com http:// ou https://): {link!r}")
+    try:
+        import segno
+    except ImportError:
+        _py = "py" if sys.platform == "win32" else "python3"
+        sys.exit(f"segno não está instalado. Rode:  {_py} -m pip install segno")
+
+    # Nível H (30% de redundância) para o logo central não atrapalhar a leitura.
+    qr = segno.make(link, error="h", micro=False, boost_error=False)
+    n = qr.symbol_size(border=0)[0]
+    _, _, lado = QR_AREA
+    # Módulo fracionário: o código preenche a área branca como no QR original.
+    modulo = lado / (n + 2 * QR_ZONA)
+    if modulo < QR_MODULO_MIN:
+        raise ValueError(f"Link longo demais para um QR legível na tela ({len(link)} caracteres): {link!r}")
+
+    img = Image.new("RGBA", (lado, lado), BRANCO)
+    d = ImageDraw.Draw(img)
+    off = QR_ZONA * modulo
+    pos = lambda i: round(off + i * modulo)  # noqa: E731 — bordas arredondadas, sem frestas
+    for y, linha in enumerate(qr.matrix_iter(scale=1, border=0)):
+        for x, escuro in enumerate(linha):
+            if escuro:
+                d.rectangle([pos(x), pos(y), pos(x + 1) - 1, pos(y + 1) - 1], fill=(0, 0, 0, 255))
+
+    # Logo no centro, com respiro branco de 1 módulo
+    logo = Image.open(ASSETS / "logo-brooklin.png").convert("RGBA")
+    alt = round(n * modulo * QR_LOGO_ALTURA)
+    larg = round(alt * logo.width / logo.height)
+    logo = logo.resize((larg, alt), Image.LANCZOS)
+    lx, ly = (lado - larg) // 2, (lado - alt) // 2
+    m = round(modulo)
+    d.rectangle([lx - m, ly - m, lx + larg + m - 1, ly + alt + m - 1], fill=BRANCO)
+    img.alpha_composite(logo, (lx, ly))
+    return img
+
+
+def ajustar_legenda(texto: str, font_path: Path):
+    x0, _, x1, _ = LEGENDA_AREA
+    for size in LEGENDA_SIZES:
+        font = ImageFont.truetype(str(font_path), size)
+        linhas = quebrar(texto, font, x1 - x0)
+        if len(linhas) <= LEGENDA_MAX_LINES and all(font.getlength(l) <= x1 - x0 for l in linhas):
+            return font, linhas
+    raise ValueError(f"Legenda do QR longa demais para {LEGENDA_MAX_LINES} linhas: {texto!r}")
+
+
+def render_bloco_qr(link: str, legenda: str, font_path: Path) -> Image.Image:
+    """Bloco no mesmo formato do qr-visitante.png: caixa azul, QR e legenda branca."""
+    legenda = " ".join((legenda or "").split()).upper()
+    if not legenda:
+        raise ValueError(f"QR sem legenda: {link!r}")
+    bloco = Image.new("RGBA", QR_BLOCO, AZUL)
+    ax, ay, _ = QR_AREA
+    bloco.alpha_composite(gerar_codigo_qr(link), (ax, ay))
+
+    font, linhas = ajustar_legenda(legenda, font_path)
+    x0, y0, x1, y1 = LEGENDA_AREA
+    passo = font.size * 1.2
+    cy = (y0 + y1) / 2 - passo * (len(linhas) - 1) / 2
+    d = ImageDraw.Draw(bloco)
+    for i, linha in enumerate(linhas):
+        d.text(((x0 + x1) / 2, cy + i * passo), linha, font=font, fill=BRANCO, anchor="mm")
+    return bloco
+
+
+def render_tela(titulo: str, corpo: str, font_path: Path, qr: dict | None = None) -> Image.Image:
+    """Monta a tela. `qr` = {"link": ..., "legenda": ...}; sem ele usa o QR de visitante."""
     titulo, corpo = titulo.strip().upper(), " ".join(corpo.split()).upper()
     img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     img.alpha_composite(Image.open(ASSETS / "logo-brooklin.png").convert("RGBA"), LOGO_POS)
-    img.alpha_composite(Image.open(ASSETS / "qr-visitante.png").convert("RGBA"), QR_POS)
+    if qr:
+        img.alpha_composite(render_bloco_qr(qr.get("link"), qr.get("legenda"), font_path), QR_POS)
+    else:
+        img.alpha_composite(Image.open(ASSETS / "qr-visitante.png").convert("RGBA"), QR_POS)
     d = ImageDraw.Draw(img)
     d.rectangle(FAIXA, fill=BRANCO)
 
@@ -184,7 +267,7 @@ def main(argv=None) -> int:
         nome = t.get("arquivo") or f"{i:02d}-{slugify(t['titulo'])}"
         try:
             destino = saida / f"{nome}.png"
-            tela = render_tela(t["titulo"], t["corpo"], font_path)
+            tela = render_tela(t["titulo"], t["corpo"], font_path, t.get("qr"))
             tela.save(destino)
             geradas.append(tela)
             print(destino)
