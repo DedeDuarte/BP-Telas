@@ -28,3 +28,7 @@ que mexa em `scripts/`.
 
   BREAKING CHANGE: campo "corpo" renomeado para "texto"
   ```
+
+## Retomada
+
+Antes de trabalhar na próxima versão, leia o plano e o contexto em [plano-0.3.0.md](plano-0.3.0.md).
