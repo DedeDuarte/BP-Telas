@@ -13,6 +13,14 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
   da igreja no centro e uma legenda curta abaixo, no mesmo lugar do QR de visitante.
 - Links inválidos ou longos demais para um QR legível são recusados com aviso.
 - Testes que leem o QR gerado (inclusive em 720p e 540p) e conferem o link caractere por caractere.
+- Regra de redação: sempre "pastor" por extenso, nunca "Pr.".
+
+### Alterado
+
+- QR de visitante refeito no mesmo modelo dos QR personalizados (logo no centro, legenda em
+  negrito). Agora é lido também com a tela inteira e em resoluções reduzidas.
+- QR com quadradinhos maiores, logo novo dentro de um quadrado branco e legenda em Open Sans
+  ExtraBold, em uma linha quando couber.
 
 ## [0.1.0] - 2026-11-05
 
