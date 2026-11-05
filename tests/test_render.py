@@ -104,6 +104,23 @@ class TestQR(unittest.TestCase):
                     lidos = zxingcpp.read_barcodes(self.tela(link).convert("RGB").resize(tamanho))
                     self.assertEqual([r.text for r in lidos], [link])
 
+    @unittest.skipUnless(zxingcpp, "zxing-cpp não instalado (py -m pip install -r requirements-dev.txt)")
+    def test_qr_visitante_le_o_link(self):
+        import gerar_qr_visitante
+        img = render.render_tela("Teste", "Corpo curto.", self.font)
+        for tamanho in [(1920, 1080), (1280, 720), (960, 540)]:
+            with self.subTest(tamanho=tamanho):
+                lidos = zxingcpp.read_barcodes(img.convert("RGB").resize(tamanho))
+                self.assertEqual([r.text for r in lidos], [gerar_qr_visitante.LINK])
+
+    def test_qr_visitante_atualizado(self):
+        # O arquivo fixo tem de ser exatamente o que o gerador produz hoje.
+        # Se falhar: rode scripts/gerar_qr_visitante.py e faça commit do PNG.
+        import gerar_qr_visitante
+        esperado = render.render_bloco_qr(gerar_qr_visitante.LINK, gerar_qr_visitante.LEGENDA)
+        atual = render.Image.open(gerar_qr_visitante.DESTINO).convert("RGBA")
+        self.assertEqual(list(atual.getdata()), list(esperado.getdata()))
+
     def test_qr_mesma_caixa_do_visitante(self):
         x, y = render.QR_POS
         w, h = render.QR_BLOCO
