@@ -37,17 +37,26 @@ Os valores exatos usados pelo renderizador estão no topo de `scripts/render.py`
 | Corpo | x=228, 2 linhas dentro da faixa branca | limite direito 1570 px |
 | Bloco QR | 1617, 608 → 1896, 971 | `assets/qr-visitante.png` ou QR personalizado (abaixo) |
 
-## Bloco de QR personalizado
+## Bloco de QR
 
-Mesma caixa do QR de visitante (279 × 363 px em 1617, 608), desenhada pelo código
-(`render_bloco_qr` em `scripts/render.py`). Coordenadas relativas ao canto da caixa:
+Todo QR (personalizado ou de visitante) é desenhado por `render_bloco_qr` em
+`scripts/render.py`, na caixa de 279 × 363 px em 1617, 608. Coordenadas relativas à caixa:
 
 | Elemento | Caixa | Observação |
 |---|---|---|
 | Caixa | 0, 0 → 279, 363 | `azul` |
 | Área branca do código | 7, 10 → 271, 274 (264 × 264) | 1 módulo de margem branca |
-| Código QR | dentro da área branca | gerado com `segno`, correção de erro **H** (30%), link exato |
-| Logo central | ~24% da altura do código | `assets/logo-brooklin.png` com 1 módulo de respiro branco |
-| Legenda | 10, 280 → 269, 356 | `branco`, Open Sans Bold 24→16 px, até 2 linhas, centralizada |
+| Código QR | dentro da área branca | `segno`, correção de erro **Q** (25%), link exato |
+| Quadrado do logo | centro, lado = 28% do código | branco, 1:1 |
+| Logo | centralizado no quadrado, 86% do lado | `assets/logo-qr.png` (cortado à área visível) |
+| Legenda | 10, 280 → 269, 356 | `branco`, **Open Sans ExtraBold**; 1 linha se couber em ≥ 22 px, senão até 2 linhas (26 → 18 px), centralizada |
 
-Módulo mínimo de 4 px: links que exigem um QR mais denso são recusados (ilegíveis na transmissão).
+- Módulo mínimo de 4 px: links que exigem um QR mais denso são recusados (ilegíveis na transmissão).
+- Nível Q em vez de H: menos módulos, quadradinhos maiores. O nível M (ainda maior) falhou nos
+  testes de leitura com o logo, por isso não é usado.
+
+### QR de visitante
+
+`assets/qr-visitante.png` é um **arquivo fixo** gerado por `scripts/gerar_qr_visitante.py`
+(link `https://typebot.co/my-typebot-a6oemdd`, legenda "VISITANDO NOSSA IGREJA PELA 1ª VEZ?").
+Não edite o PNG à mão: mude o script e rode-o. Um teste falha se o PNG ficar desatualizado.

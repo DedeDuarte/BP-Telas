@@ -55,8 +55,9 @@ ponto do roteiro (`NN-slug.png`, na ordem do roteiro), o `telas.json` com os tex
 | Arquivo | Uso |
 |---|---|
 | `assets/logo-brooklin.png` | Logo isolado (20,775 → 185,972) |
-| `assets/qr-visitante.png` | Bloco QR "visitando pela 1ª vez" (1617,608 → 1896,971) |
-| `assets/fonts/` | Open Sans Bold, baixada sob demanda (não versionada) |
+| `assets/qr-visitante.png` | Bloco QR padrão "visitando pela 1ª vez" (1617,608 → 1896,971). Arquivo fixo gerado por `scripts/gerar_qr_visitante.py` — não edite à mão |
+| `assets/logo-qr.png` | Logo usado no centro dos QR |
+| `assets/fonts/` | Open Sans Bold e ExtraBold, baixadas sob demanda (não versionadas) |
 | `assets/modelo.png` | **Só referência histórica — não use na skill.** O script desenha tudo sozinho. |
 
 ## Exemplos
