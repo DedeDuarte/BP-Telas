@@ -116,10 +116,16 @@ class TestQR(unittest.TestCase):
     def test_qr_visitante_atualizado(self):
         # O arquivo fixo tem de ser exatamente o que o gerador produz hoje.
         # Se falhar: rode scripts/gerar_qr_visitante.py e faça commit do PNG.
+        # Tolerância: versões diferentes do Pillow/FreeType mudam a suavização de bordas em
+        # poucos tons; link ou legenda diferentes mudam centenas de pixels por completo.
+        from PIL import ImageChops
         import gerar_qr_visitante
         esperado = render.render_bloco_qr(gerar_qr_visitante.LINK, gerar_qr_visitante.LEGENDA)
         atual = render.Image.open(gerar_qr_visitante.DESTINO).convert("RGBA")
-        self.assertEqual(list(atual.getdata()), list(esperado.getdata()))
+        self.assertEqual(atual.size, esperado.size)
+        diff = ImageChops.difference(atual.convert("L"), esperado.convert("L"))
+        muito_diferentes = sum(diff.histogram()[65:])
+        self.assertLess(muito_diferentes, 30, "rode scripts/gerar_qr_visitante.py")
 
     def test_qr_mesma_caixa_do_visitante(self):
         x, y = render.QR_POS
@@ -135,7 +141,7 @@ class TestQR(unittest.TestCase):
         visitante = render.Image.open(render.ASSETS / "qr-visitante.png").convert("RGBA")
         x, y = render.QR_POS
         recorte = img.crop((x, y, x + visitante.width, y + visitante.height))
-        self.assertEqual(list(recorte.getdata()), list(visitante.getdata()))
+        self.assertEqual(recorte.tobytes(), visitante.tobytes())
 
     def test_link_invalido(self):
         for link in ["chat.whatsapp.com/abc", "ftp://x.com/a", "https://x.com/a b", ""]:
