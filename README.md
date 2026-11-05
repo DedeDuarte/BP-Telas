@@ -17,6 +17,10 @@ nas telas de lower-third (PNG 1920×1080 transparente) usadas na transmissão.
 
    O Claude mostra uma tabela com título e texto de cada tela para você aprovar antes de gerar.
 
+   **QR code personalizado:** passe o link junto do ponto ou no final do pedido
+   (`link do 3: https://...`). A tela 3 ganha um QR com esse link direto (sem site intermediário),
+   o logo da igreja no centro e uma legenda curta. Sem link, a tela usa o QR de visitante.
+
 3. **Pegue as imagens** em `Downloads/Telas AAAA-MM-DD/`. Para salvar em outro lugar, é só dizer
    a pasta no pedido.
 
@@ -39,7 +43,7 @@ Ao receber o pedido do passo 1:
 ## Requisitos
 
 - Windows (principal) ou Linux
-- Python 3.9+ e Pillow (`requirements.txt` dentro da skill)
+- Python 3.9+, Pillow e segno (`requirements.txt` dentro da skill)
 - Internet na primeira execução (download da fonte Open Sans Bold)
 
 ## Estrutura
@@ -68,15 +72,13 @@ py .claude\skills\gerar-telas\scripts\render.py --pasta 2026-11-07
 py .claude\skills\gerar-telas\scripts\render.py "<pasta>\telas.json"
 ```
 
-Testes (também rodam no GitHub em Windows e Linux a cada push):
+Testes (também rodam no GitHub em Windows e Linux a cada push). O `requirements-dev.txt`
+inclui o `zxing-cpp`, que lê os QR gerados para garantir que apontam para o link exato:
 
 ```
+py -m pip install -r requirements-dev.txt
 py -m unittest discover tests
 ```
-
-## Próximos passos
-
-- [ ] Gerar QR code específico por tela (ex.: link da comunidade do WhatsApp)
 
 ## Licença
 

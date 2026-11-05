@@ -6,6 +6,14 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 
 ## [Não publicado]
 
+### Adicionado
+
+- QR code personalizado por tela: basta passar o link junto do ponto ou no fim do pedido
+  (`link do 3: https://...`). O QR aponta direto para o link (sem site intermediário), tem o logo
+  da igreja no centro e uma legenda curta abaixo, no mesmo lugar do QR de visitante.
+- Links inválidos ou longos demais para um QR legível são recusados com aviso.
+- Testes que leem o QR gerado (inclusive em 720p e 540p) e conferem o link caractere por caractere.
+
 ## [0.1.0] - 2026-11-05
 
 ### Adicionado
