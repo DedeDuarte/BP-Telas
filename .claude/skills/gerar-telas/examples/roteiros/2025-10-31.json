@@ -1,0 +1,30 @@
+{
+  "data": "2025-10-31",
+  "telas": [
+    {
+      "arquivo": "01-culto-domingo",
+      "titulo": "Culto de Domingo",
+      "corpo": "Amanhã, às 10h, o Pr. José Orlando encerra a série “Coração e Mente” com a mensagem “Mente e Coração Saudáveis”. Esperamos você!"
+    },
+    {
+      "arquivo": "02-culto-quarta",
+      "titulo": "Culto de Quarta",
+      "corpo": "Nesta quarta, às 19h30, mais um encontro da série “Enquanto Ele Não Vem” com o Pr. Petterson Chagas. Traga sua Bíblia!"
+    },
+    {
+      "arquivo": "03-mutirao-natal",
+      "titulo": "Mutirão de Natal 2025",
+      "corpo": "O Mutirão de Natal 2025 começou! Doe roupas, acessórios, brinquedos e outros itens novos ou seminovos para o Bazar Solidário da ASA."
+    },
+    {
+      "arquivo": "04-comunidade-whatsapp",
+      "titulo": "Comunidade WhatsApp",
+      "corpo": "Acompanhe eventos, cultos, links dos sermões e atas de transferência. Mande uma mensagem para (11) 94914-7174 e entre na comunidade."
+    },
+    {
+      "arquivo": "05-secretaria",
+      "titulo": "Secretaria",
+      "corpo": "Atualização de cadastro, transferências e consultas sobre atas da comissão: fale com a secretaria pelo WhatsApp (11) 98910-8915."
+    }
+  ]
+}
