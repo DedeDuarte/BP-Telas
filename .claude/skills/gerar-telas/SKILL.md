@@ -10,7 +10,7 @@ Transforma cada ponto informativo de um roteiro em uma tela (overlay transparent
 ## Entrada
 
 Um roteiro em texto (colado na conversa ou um arquivo em `roteiros/`). Formato esperado em
-[references/roteiro.md](references/roteiro.md). Exemplo real: [examples/roteiros/2025-10-31.txt](examples/roteiros/2025-10-31.txt).
+[references/roteiro.md](references/roteiro.md). Exemplo real: [examples/roteiros/2026-10-31.txt](examples/roteiros/2026-10-31.txt).
 
 ## Saída
 
@@ -20,6 +20,8 @@ PNGs em `saida/<AAAA-MM-DD>/`, um por ponto do roteiro que gera tela, nomeados
 ## Fluxo
 
 1. **Ler o roteiro** e separar os pontos numerados. Identificar a data da edição (1ª linha).
+   **Ano: sempre o ano atual**, a não ser que outro ano esteja escrito explicitamente no roteiro
+   — ver [references/roteiro.md](references/roteiro.md).
    Cada ponto vira uma tela — ver [references/tipos-de-tela.md](references/tipos-de-tela.md).
 2. **Redigir título e corpo** de cada tela seguindo as regras de
    [references/tipos-de-tela.md](references/tipos-de-tela.md#redação): título curto, corpo de
@@ -27,7 +29,7 @@ PNGs em `saida/<AAAA-MM-DD>/`, um por ponto do roteiro que gera tela, nomeados
    sempre o título `CULTO DE DOMINGO` / `CULTO DE QUARTA`.**
 3. **Mostrar ao usuário a tabela de telas** (nº, título, corpo) e esperar aprovação.
 4. **Salvar o JSON** aprovado em `roteiros/<AAAA-MM-DD>.json` (formato em
-   [examples/roteiros/2025-10-31.json](examples/roteiros/2025-10-31.json)).
+   [examples/roteiros/2026-10-31.json](examples/roteiros/2026-10-31.json)).
 5. **Renderizar** (a partir da raiz do projeto). O uso principal é no **Windows**:
    - Windows: `py .claude\skills\gerar-telas\scripts\render.py roteiros\<AAAA-MM-DD>.json`
      (se `py` não existir, use `python`)
