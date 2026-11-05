@@ -19,8 +19,11 @@
       GitHub no Claude Code do Windows, rodar `tests/roteiros/2026-11-07-pegadinhas.txt` e conferir
       com o gabarito ao lado. Rodar `py -m unittest discover tests`.
       Anotar o resultado na seção "Histórico" do gabarito.
-- [ ] **Teste no Claude App** com o ZIP `gerar-telas-0.2.0.zip` (gerado em `~/Downloads`, com as
-      fontes incluídas). Anotar o que funcionou e onde travou — isso orienta a tarefa 1.
+- [x] **Teste no Claude App** (2026-11-05): a redação/tabela acertou todas as pegadinhas; o render
+      falhou porque o ambiente não tinha `segno` nem internet (download da fonte deu 403). Pillow 12.3.0
+      já estava instalado. → resolvido embutindo fontes e segno (tarefa 1). Testar de novo com o ZIP novo.
+- [ ] **Testar de novo no Claude App** com um ZIP da skill atual (fontes e segno embutidos):
+      esperado gerar as telas e entregá-las anexadas no chat.
 - [ ] Ler o QR das telas com o **celular de verdade** (o leitor dos testes é o zxing-cpp; celular
       é o que importa na transmissão).
 
@@ -30,18 +33,18 @@ Contexto: no app, skills rodam num ambiente Linux isolado da Anthropic (code exe
 Não há pasta Downloads do usuário, a instalação é por **upload de ZIP** (Configurações →
 Capacidades → Skills) e o acesso à internet/pip pode estar bloqueado.
 
-- [ ] **Confirmar na documentação oficial** como skills rodam no app: pacotes pré-instalados
+- [ ] (parcial — confirmado na prática: sem rede, Pillow presente) **Confirmar na documentação oficial** como skills rodam no app: pacotes pré-instalados
       (Pillow sim? segno?), acesso à rede, onde salvar arquivos para o usuário baixar.
       Não implementar no chute.
-- [ ] **Embutir as fontes** Open Sans Bold e ExtraBold em `assets/fonts/` (hoje são baixadas e
+- [x] **Embutir as fontes** Open Sans Bold e ExtraBold em `assets/fonts/` (hoje são baixadas e
       ignoradas pelo git). Incluir `OFL.txt` (licença SIL OFL 1.1 exige). Manter `fonts.py` só como
       fallback ou removê-lo. Atualizar `.gitignore`.
-- [ ] **Embutir o `segno`** (Python puro, licença BSD) em `scripts/vendor/` com a licença dele, ou
+- [x] **Embutir o `segno`** (Python puro, licença BSD) em `scripts/vendor/` com a licença dele, ou
       confirmar que o app já o tem. Objetivo: o único requisito externo ser o Pillow.
-- [ ] **Detectar o ambiente** em `render.py`: se não houver pasta Downloads do usuário (ambiente do
+- [x] **Detectar o ambiente** em `render.py`: se não houver pasta Downloads do usuário (ambiente do
       app), salvar na pasta de saída do ambiente. Documentar no `SKILL.md` como entregar os
       arquivos ao usuário nesse caso.
-- [ ] **Comandos no `SKILL.md`**: hoje mostram `py` (Windows) e `python3` (Linux). No app é sempre
+- [x] **Comandos no `SKILL.md`**: hoje mostram `py` (Windows) e `python3` (Linux). No app é sempre
       `python3`. Deixar claro.
 - [ ] **ZIP da skill em cada release**: anexar `gerar-telas-X.Y.Z.zip` aos releases do GitHub
       (manualmente ou com GitHub Actions disparado pela tag). README com o passo a passo de
@@ -61,7 +64,7 @@ Medido em 2026-11-05 (pasta `.claude/skills/gerar-telas/`, ~1,5 MB):
 - [ ] Reduzir `logo-qr.png` e **regerar `qr-visitante.png`** (`scripts/gerar_qr_visitante.py`).
       Conferir que os testes de leitura de QR continuam passando.
 - [ ] Atualizar referências a esses caminhos em `SKILL.md`, `references/*.md` e `README.md`.
-- [ ] Instalação com **`git clone --depth 1`** no README (evita baixar o histórico, que cresce a
+- [x] Instalação com **`git clone --depth 1`** no README (evita baixar o histórico, que cresce a
       cada PNG alterado).
 
 ### 3. Release

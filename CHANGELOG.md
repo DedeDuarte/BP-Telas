@@ -6,6 +6,18 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 
 ## [Não publicado]
 
+### Adicionado
+
+- Funciona no Claude App / claude.ai: fontes Open Sans e o gerador de QR (`segno`) vêm dentro
+  da skill, então nada é baixado nem instalado. O único requisito é o Pillow.
+- Sem pasta Downloads (app, nuvem), as telas vão para a pasta de saída do ambiente e são
+  entregues no chat.
+- Instruções de instalação e remoção no Claude App (upload de ZIP).
+
+### Alterado
+
+- Instalação pelo Claude Code clona só a versão atual (`git clone --depth 1`).
+
 ## [0.2.0] - 2026-11-05
 
 > **Atualizando do 0.1.0:** reinstale a skill (peça ao Claude de novo com o link do repositório).
