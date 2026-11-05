@@ -6,6 +6,8 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 
 ## [Não publicado]
 
+## [0.1.0] - 2026-11-05
+
 ### Adicionado
 
 - Skill `gerar-telas`: transforma cada ponto do roteiro do Brooklin em Pauta em uma tela PNG
@@ -18,3 +20,6 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
   roteiro não informa outro.
 - Suporte a Windows (prioritário) e Linux, com testes automáticos nos dois sistemas.
 - Licença MIT.
+
+[Não publicado]: https://github.com/DedeDuarte/BP-Telas/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/DedeDuarte/BP-Telas/releases/tag/v0.1.0
