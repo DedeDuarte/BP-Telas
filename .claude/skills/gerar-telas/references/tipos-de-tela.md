@@ -31,7 +31,7 @@ Sempre o mesmo: `assets/qr-visitante.png`. Mesmo que o roteiro diga "leia o QR C
 - Pode terminar com chamada curta: `Esperamos você!`, `Participe!`, `Inscreva-se com a equipe do MIB!`.
 
 Exemplo — roteiro, ponto 2 (≈90 palavras) → corpo:
-> AMANHÃ, ÀS 10H, O PR. JOSÉ ORLANDO ENCERRA A SÉRIE “CORAÇÃO E MENTE” COM A MENSAGEM “MENTE E CORAÇÃO SAUDÁVEIS”. ESPERAMOS VOCÊ!
+> AMANHÃ, ÀS 10H, O PASTOR JOSÉ ORLANDO ENCERRA A SÉRIE “CORAÇÃO E MENTE” COM A MENSAGEM “MENTE E CORAÇÃO SAUDÁVEIS”. ESPERAMOS VOCÊ!
 
 Exemplo completo (roteiro → JSON): [examples/roteiros/2026-10-31.txt](../examples/roteiros/2026-10-31.txt)
 → [examples/roteiros/2026-10-31.json](../examples/roteiros/2026-10-31.json).
