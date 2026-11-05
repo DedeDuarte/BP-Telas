@@ -1,0 +1,3 @@
+Cópia do segno 1.6.6 (https://github.com/heuer/segno), licença BSD-3-Clause (ver LICENSE).
+Só os módulos usados pela skill: __init__, encoder, consts, utils, writers.
+Incluído para a skill funcionar sem pip/internet (ex.: Claude App).

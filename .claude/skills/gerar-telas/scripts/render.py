@@ -41,11 +41,27 @@ except ImportError:
     _py = "py" if sys.platform == "win32" else "python3"
     sys.exit(f"Pillow não está instalado. Rode:  {_py} -m pip install pillow")
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+_SCRIPTS = Path(__file__).resolve().parent
+sys.path.insert(0, str(_SCRIPTS))
+# segno embutido tem prioridade: mesma versão (e mesmo QR) em qualquer ambiente.
+sys.path.insert(0, str(_SCRIPTS / "vendor"))
 from fonts import ensure_font  # noqa: E402
 
-SKILL_DIR = Path(__file__).resolve().parent.parent
+SKILL_DIR = _SCRIPTS.parent
 ASSETS = SKILL_DIR / "assets"
+
+# Pasta de saída do ambiente do Claude App / claude.ai (arquivos que o usuário pode baixar).
+SAIDA_APP = Path("/mnt/user-data/outputs")
+
+
+def pasta_base() -> Path:
+    """Onde criar 'Telas <data>': Downloads do usuário; no ambiente do app, a pasta de saída dele."""
+    downloads = pasta_downloads()
+    if downloads.is_dir():
+        return downloads
+    if SAIDA_APP.is_dir():
+        return SAIDA_APP
+    return Path.cwd()
 
 
 def pasta_downloads() -> Path:
@@ -71,7 +87,7 @@ def pasta_downloads() -> Path:
 
 
 def pasta_padrao(data: str) -> Path:
-    return pasta_downloads() / f"Telas {data}"
+    return pasta_base() / f"Telas {data}"
 
 # ---- Especificação (ver references/design-spec.md) ----
 W, H = 1920, 1080
@@ -154,11 +170,7 @@ def gerar_codigo_qr(link: str) -> Image.Image:
     """QR estático com o link exato (sem encurtador/redirecionamento) e o logo no centro."""
     if not re.fullmatch(r"https?://\S+", link or ""):
         raise ValueError(f"Link inválido (precisa começar com http:// ou https://): {link!r}")
-    try:
-        import segno
-    except ImportError:
-        _py = "py" if sys.platform == "win32" else "python3"
-        sys.exit(f"segno não está instalado. Rode:  {_py} -m pip install segno")
+    import segno  # cópia embutida em scripts/vendor (sem pip/internet)
 
     # Nível Q (25% de redundância): cobre o logo central com folga e gera menos módulos
     # que o H, deixando os quadradinhos maiores. (M falha com logo um pouco maior.)
