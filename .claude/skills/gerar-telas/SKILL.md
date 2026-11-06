@@ -24,10 +24,12 @@ Por padrão, na pasta **Downloads** do usuário: `Downloads/Telas AAAA-MM-DD/`, 
 ponto do roteiro (`NN-slug.png`, na ordem do roteiro), o `telas.json` com os textos usados e o
 `_preview.jpg` de conferência. Se o usuário pedir outra pasta, use `-o "<pasta>"`.
 
-**Sem pasta Downloads** (Claude App, claude.ai, sessões na nuvem): o script usa
-`/mnt/user-data/outputs/Telas AAAA-MM-DD/` se existir, senão a pasta atual. Nesse caso os arquivos
-**não** estão no computador do usuário: ao final, **entregue os PNGs** (e o `_preview.jpg`) pelo
-recurso de compartilhar/anexar arquivos do ambiente, para ele baixar.
+**Sem pasta Downloads** (Claude App, claude.ai, sessões na nuvem): o script usa, nesta ordem,
+`$OUTPUT_DIR`, `/mnt/user-data/outputs/` ou a pasta atual, criando `Telas AAAA-MM-DD/` dentro dela.
+O script imprime o caminho final: **use esse caminho**, não suponha um. Nesse caso os arquivos
+**não** estão no computador do usuário: ao final, **confirme que os PNGs existem** (`ls`) e
+**entregue-os** (e o `_preview.jpg`) pelo recurso de anexar arquivos do ambiente, para ele baixar.
+Se não houver como anexar, entregue ao menos o `telas.json` para ele rodar no computador dele.
 
 ## Fluxo
 

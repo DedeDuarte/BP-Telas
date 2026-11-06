@@ -1,7 +1,10 @@
 """Testes do renderizador de telas. Rodar da raiz: py -m unittest discover tests"""
+import os
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / ".claude" / "skills" / "gerar-telas" / "scripts"))
@@ -172,6 +175,33 @@ class TestQR(unittest.TestCase):
             self.tela(LINKS[0], legenda="")
         with self.assertRaises(ValueError):
             self.tela(LINKS[0], legenda="texto muito comprido " * 6)
+
+
+
+
+class PastaBaseTest(unittest.TestCase):
+    """Sem Downloads (ambiente do app): $OUTPUT_DIR, depois /mnt/user-data/outputs, depois a pasta atual."""
+
+    def test_usa_output_dir_sem_downloads(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            inexistente = Path(tmp) / "nao-existe"
+            with mock.patch.object(render, "pasta_downloads", return_value=inexistente), \
+                    mock.patch.dict(os.environ, {"OUTPUT_DIR": tmp}):
+                self.assertEqual(render.pasta_base(), Path(tmp))
+
+    def test_downloads_tem_prioridade_sobre_output_dir(self):
+        with tempfile.TemporaryDirectory() as dl, tempfile.TemporaryDirectory() as out:
+            with mock.patch.object(render, "pasta_downloads", return_value=Path(dl)), \
+                    mock.patch.dict(os.environ, {"OUTPUT_DIR": out}):
+                self.assertEqual(render.pasta_base(), Path(dl))
+
+    def test_output_dir_inexistente_e_ignorado(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            falso = Path(tmp) / "falso"
+            with mock.patch.object(render, "pasta_downloads", return_value=falso), \
+                    mock.patch.object(render, "SAIDA_APP", falso), \
+                    mock.patch.dict(os.environ, {"OUTPUT_DIR": str(falso)}):
+                self.assertEqual(render.pasta_base(), Path.cwd())
 
 
 if __name__ == "__main__":

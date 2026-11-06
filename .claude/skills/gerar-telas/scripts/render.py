@@ -59,6 +59,10 @@ def pasta_base() -> Path:
     downloads = pasta_downloads()
     if downloads.is_dir():
         return downloads
+    # $OUTPUT_DIR: pasta de saída documentada pela Anthropic para a execução de código.
+    env = os.environ.get("OUTPUT_DIR")
+    if env and Path(env).is_dir():
+        return Path(env)
     if SAIDA_APP.is_dir():
         return SAIDA_APP
     return Path.cwd()
