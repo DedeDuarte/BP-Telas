@@ -15,6 +15,9 @@ Uso (Windows; no Linux troque `py` por `python3`):
     py scripts\\render.py --pasta 2026-10-31     # cria e mostra a pasta padrão da edição
     py scripts\\render.py telas.json             # gera em Downloads\\Telas <data>\\
     py scripts\\render.py telas.json -o pasta    # gera em outra pasta
+    py scripts\\render.py telas.json --zip       # também gera 'Telas <data>.zip' (PNGs + telas.json)
+
+Sem pasta Downloads (Claude App) o ZIP é gerado automaticamente, ao lado da pasta da edição.
 """
 from __future__ import annotations
 
@@ -26,6 +29,7 @@ import shutil
 import subprocess
 import sys
 import unicodedata
+import zipfile
 from pathlib import Path
 
 # Consoles do Windows (cp1252) quebram com acentos/aspas curvas: força UTF-8.
@@ -274,6 +278,8 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("json", type=Path, nargs="?", help="JSON com as telas")
     ap.add_argument("-o", "--saida", type=Path, help="pasta de saída (padrão: Downloads/Telas <data>)")
+    ap.add_argument("--zip", action="store_true",
+                    help="também gera 'Telas <data>.zip' (PNGs + telas.json); automático sem pasta Downloads")
     ap.add_argument("--pasta", metavar="AAAA-MM-DD", help="só cria e mostra a pasta padrão da edição")
     args = ap.parse_args(argv)
 
@@ -309,7 +315,23 @@ def main(argv=None) -> int:
             print(f"ERRO [{nome}]: {e}", file=sys.stderr)
     if geradas:
         print(salvar_preview(geradas, saida / "_preview.jpg"))
+    # No app (sem Downloads) o usuário recebe um único ZIP com tudo.
+    if geradas and not erros and (args.zip or (not args.saida and not pasta_downloads().is_dir())):
+        print(zipar_edicao(saida))
     return 1 if erros else 0
+
+
+def zipar_edicao(saida: Path) -> Path:
+    """Gera '<pasta>.zip' ao lado da pasta da edição: os PNGs e o telas.json, dentro de '<pasta>/'.
+
+    O _preview.jpg fica de fora (é só conferência).
+    """
+    destino = saida.with_name(saida.name + ".zip")
+    arquivos = sorted(saida.glob("*.png")) + [saida / "telas.json"]
+    with zipfile.ZipFile(destino, "w", zipfile.ZIP_DEFLATED) as z:
+        for arq in arquivos:
+            z.write(arq, (Path(saida.name) / arq.name).as_posix())
+    return destino
 
 
 def salvar_preview(telas: list[Image.Image], destino: Path) -> Path:

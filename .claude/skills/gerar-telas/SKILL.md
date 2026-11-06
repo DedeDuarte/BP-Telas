@@ -26,9 +26,11 @@ ponto do roteiro (`NN-slug.png`, na ordem do roteiro), o `telas.json` com os tex
 
 **Sem pasta Downloads** (Claude App, claude.ai, sessões na nuvem): o script usa, nesta ordem,
 `$OUTPUT_DIR`, `/mnt/user-data/outputs/` ou a pasta atual, criando `Telas AAAA-MM-DD/` dentro dela.
-O script imprime o caminho final: **use esse caminho**, não suponha um. Nesse caso os arquivos
-**não** estão no computador do usuário: ao final, **confirme que os PNGs existem** (`ls`) e
-**entregue-os** (e o `_preview.jpg`) pelo recurso de anexar arquivos do ambiente, para ele baixar.
+O script imprime os caminhos finais: **use esses caminhos**, não suponha nenhum. Nesse caso os
+arquivos **não** estão no computador do usuário, e o script gera sozinho `Telas AAAA-MM-DD.zip`
+(todos os PNGs + `telas.json`, dentro da pasta `Telas AAAA-MM-DD/`). Ao final, **confirme que o
+ZIP existe** (`ls`) e **entregue somente esse ZIP** como anexo (um único arquivo; não anexe os PNGs
+soltos). O `_preview.jpg` é só para você conferir e não vai no ZIP.
 Se não houver como anexar, entregue ao menos o `telas.json` para ele rodar no computador dele.
 
 ## Fluxo
@@ -60,7 +62,7 @@ Se não houver como anexar, entregue ao menos o `telas.json` para ele rodar no c
      explique o erro ao usuário.
 7. **Conferir visualmente** abrindo `_preview.jpg` (todas as telas sobre fundo cinza — sobre
    branco a faixa branca do corpo fica invisível) e informar ao usuário a pasta gerada — ou,
-   sem pasta Downloads, entregar os arquivos (ver **Saída**).
+   sem pasta Downloads, entregar o ZIP (ver **Saída**).
 
 ## Assets
 

@@ -220,5 +220,46 @@ class ZipTest(unittest.TestCase):
         self.assertTrue(all("\\" not in n for n in nomes))
 
 
+class ZipEdicaoTest(unittest.TestCase):
+    """No app (sem Downloads) o render gera um único ZIP com os PNGs e o telas.json."""
+
+    def rodar(self, tmp, extra, com_downloads):
+        import io
+        import json
+        from contextlib import redirect_stdout
+        tmp = Path(tmp)
+        js = tmp / "telas.json"
+        js.write_text(json.dumps({"data": "2026-11-07", "telas": [
+            {"arquivo": "01-a", "titulo": "A", "corpo": "Texto curto."},
+            {"arquivo": "02-b", "titulo": "B", "corpo": "Outro texto."}]}), encoding="utf-8")
+        dl = tmp / "dl" if com_downloads else tmp / "nao-existe"
+        dl.mkdir(exist_ok=True) if com_downloads else None
+        out = tmp / "out"
+        out.mkdir()
+        with mock.patch.object(render, "pasta_downloads", return_value=dl), \
+                mock.patch.dict(os.environ, {"OUTPUT_DIR": str(out)}), redirect_stdout(io.StringIO()):
+            render.main([str(js)] + extra)
+        return out, dl
+
+    def test_zip_automatico_sem_downloads(self):
+        import zipfile
+        with tempfile.TemporaryDirectory() as tmp:
+            out, _ = self.rodar(tmp, [], com_downloads=False)
+            nomes = sorted(zipfile.ZipFile(out / "Telas 2026-11-07.zip").namelist())
+        self.assertEqual(nomes, ["Telas 2026-11-07/01-a.png", "Telas 2026-11-07/02-b.png",
+                                 "Telas 2026-11-07/telas.json"])
+
+    def test_sem_zip_quando_ha_downloads(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _, dl = self.rodar(tmp, [], com_downloads=True)
+            self.assertFalse(list(dl.glob("*.zip")))
+            self.assertTrue((dl / "Telas 2026-11-07" / "01-a.png").is_file())
+
+    def test_flag_zip_forca_o_zip(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _, dl = self.rodar(tmp, ["--zip"], com_downloads=True)
+            self.assertTrue((dl / "Telas 2026-11-07.zip").is_file())
+
+
 if __name__ == "__main__":
     unittest.main()
