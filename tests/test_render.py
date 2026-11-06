@@ -10,7 +10,6 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / ".claude" / "skills" / "gerar-telas" / "scripts"))
 
 import render  # noqa: E402
-from fonts import caminho_fonte  # noqa: E402
 
 AZUL = render.AZUL[:3]
 
@@ -34,7 +33,7 @@ def numero_de_linhas(img):
 class TestRender(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.font = caminho_fonte()
+        cls.font = render.FONTE_BOLD
 
     def test_corpo_de_uma_linha(self):
         img = render.render_tela("Culto de Quarta", "Hoje, às 19h30. Esperamos você!", self.font)
@@ -96,7 +95,7 @@ LINKS = [
 class TestQR(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.font = caminho_fonte()
+        cls.font = render.FONTE_BOLD
 
     def tela(self, link, legenda="Entre na comunidade"):
         return render.render_tela("Teste", "Corpo curto.", self.font, {"link": link, "legenda": legenda})

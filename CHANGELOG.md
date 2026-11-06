@@ -8,7 +8,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 
 ### Removido
 
-- Código de download da fonte (`fonts.py`): as fontes já vêm dentro da skill.
+- Script `fonts.py` (download da fonte): as fontes já vêm dentro da skill.
 
 ## [0.3.0] - 2026-11-05
 

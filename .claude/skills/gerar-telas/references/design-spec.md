@@ -20,7 +20,7 @@ Medidas extraídas dos PNGs originais (em `design/` no repositório; não vão n
 ## Tipografia
 
 - Fonte: **Open Sans Bold**, sempre em CAIXA ALTA. Vem dentro da skill, em
-  `assets/fonts/` (carregada por `scripts/fonts.py`).
+  `assets/fonts/`.
 - Título (sobre a barra): branco, ~36 px de altura de versal.
 - Corpo (sobre transparente): azul, 26–34 px (o maior que couber em 2 linhas), entrelinha 1,38 × tamanho.
 

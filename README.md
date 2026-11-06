@@ -70,7 +70,7 @@ BP-Telas/
 ├── .claude/skills/gerar-telas/     ← a skill (é isto que é instalado)
 │   ├── SKILL.md                    ← instruções principais (fluxo)
 │   ├── requirements.txt
-│   ├── scripts/                    ← render.py (gera as telas) e fonts.py (caminho das fontes)
+│   ├── scripts/                    ← render.py (gera as telas) e gerar_qr_visitante.py
 │   ├── assets/                     ← logo, fontes e bloco de QR
 │   ├── references/                 ← especificação visual, regras de redação, formato do roteiro
 │   └── examples/                   ← roteiro e JSON de exemplo

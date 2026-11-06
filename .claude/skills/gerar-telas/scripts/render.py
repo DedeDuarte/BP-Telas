@@ -46,13 +46,14 @@ except ImportError:
     sys.exit(f"Pillow não está instalado. Rode:  {_py} -m pip install pillow")
 
 _SCRIPTS = Path(__file__).resolve().parent
-sys.path.insert(0, str(_SCRIPTS))
 # segno embutido tem prioridade: mesma versão (e mesmo QR) em qualquer ambiente.
 sys.path.insert(0, str(_SCRIPTS / "vendor"))
-from fonts import caminho_fonte  # noqa: E402
 
 SKILL_DIR = _SCRIPTS.parent
 ASSETS = SKILL_DIR / "assets"
+# Open Sans embutida (licença SIL OFL 1.1 em assets/fonts/OFL.txt).
+FONTE_BOLD = ASSETS / "fonts" / "OpenSans-Bold.ttf"            # título e corpo
+FONTE_EXTRABOLD = ASSETS / "fonts" / "OpenSans-ExtraBold.ttf"  # legenda do QR
 
 # Pasta de saída do ambiente do Claude App / claude.ai (arquivos que o usuário pode baixar).
 SAIDA_APP = Path("/mnt/user-data/outputs")
@@ -234,7 +235,7 @@ def render_bloco_qr(link: str, legenda: str) -> Image.Image:
     ax, ay, _ = QR_AREA
     bloco.alpha_composite(gerar_codigo_qr(link), (ax, ay))
 
-    font, linhas = ajustar_legenda(legenda, caminho_fonte("ExtraBold"))
+    font, linhas = ajustar_legenda(legenda, FONTE_EXTRABOLD)
     x0, y0, x1, y1 = LEGENDA_AREA
     passo = font.size * 1.2
     cy = (y0 + y1) / 2 - passo * (len(linhas) - 1) / 2
@@ -299,7 +300,7 @@ def main(argv=None) -> int:
     registro = saida / "telas.json"
     if args.json.resolve() != registro.resolve():
         shutil.copyfile(args.json, registro)
-    font_path = caminho_fonte()
+    font_path = FONTE_BOLD
 
     erros, geradas = 0, []
     for i, t in enumerate(dados["telas"], 1):
