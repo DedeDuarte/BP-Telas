@@ -6,6 +6,12 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 
 ## [Não publicado]
 
+## [0.3.0] - 2026-11-05
+
+> **Atualizando do 0.2.0:** reinstale a skill. No Claude Code, peça ao Claude de novo com o link do
+> repositório. No Claude App / claude.ai, apague a skill antiga e envie o `gerar-telas-0.3.0.zip`
+> do release.
+
 ### Adicionado
 
 - Funciona no Claude App / claude.ai: fontes Open Sans e o gerador de QR (`segno`) vêm dentro
@@ -13,11 +19,20 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 - Sem pasta Downloads (app, nuvem), as telas vão para a pasta de saída do ambiente e são
   entregues no chat.
 - Instruções de instalação e remoção no Claude App (upload de ZIP).
-- No app, as telas são entregues em um único `Telas AAAA-MM-DD.zip` (PNGs na raiz do ZIP; `_preview.jpg` e `telas.json` em `extras/`); `--zip` força o ZIP em qualquer ambiente.
+- No app, as telas são entregues em um único `Telas AAAA-MM-DD.zip` (PNGs na raiz do ZIP;
+  `_preview.jpg` e `telas.json` em `extras/`); `--zip` força o ZIP em qualquer ambiente.
+- `tools/gerar_zip.py` gera o ZIP da skill para o Claude App; cada release ganha o
+  `gerar-telas-X.Y.Z.zip` anexado por um workflow do GitHub Actions.
+- A pasta de saída no app respeita `$OUTPUT_DIR`, depois `/mnt/user-data/outputs`.
 
 ### Alterado
 
 - Instalação pelo Claude Code clona só a versão atual (`git clone --depth 1`).
+- Skill instalada bem menor (de ~1,5 MB para ~680 KB, ZIP de ~310 KB): logo do QR reduzido e
+  imagens de referência movidas para `design/`, que não é instalada.
+- `description` da skill encurtada para até 200 caracteres (limite citado na ajuda do claude.ai).
+- O "Source code" dos releases traz só a skill, o README, o LICENSE e o CHANGELOG.
+- README começa pelo download da skill.
 
 ## [0.2.0] - 2026-11-05
 
@@ -62,6 +77,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 - Suporte a Windows (prioritário) e Linux, com testes automáticos nos dois sistemas.
 - Licença MIT.
 
-[Não publicado]: https://github.com/DedeDuarte/BP-Telas/compare/v0.2.0...HEAD
+[Não publicado]: https://github.com/DedeDuarte/BP-Telas/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/DedeDuarte/BP-Telas/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/DedeDuarte/BP-Telas/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/DedeDuarte/BP-Telas/releases/tag/v0.1.0
