@@ -31,7 +31,6 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 - Skill instalada bem menor (de ~1,5 MB para ~680 KB, ZIP de ~310 KB): logo do QR reduzido e
   imagens de referência movidas para `design/`, que não é instalada.
 - `description` da skill encurtada para até 200 caracteres (limite citado na ajuda do claude.ai).
-- O "Source code" dos releases traz só a skill, o README, o LICENSE e o CHANGELOG.
 - README começa pelo download da skill.
 
 ## [0.2.0] - 2026-11-05
