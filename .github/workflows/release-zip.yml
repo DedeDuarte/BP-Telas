@@ -1,0 +1,27 @@
+name: ZIP do release
+
+# Quando um release é publicado, gera gerar-telas-X.Y.Z.zip e anexa a ele.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  zip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Gerar o ZIP da skill
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: python tools/gerar_zip.py "${TAG#v}"
+      - name: Anexar ao release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$TAG" dist/gerar-telas-*.zip --clobber
