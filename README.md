@@ -2,7 +2,7 @@
 
 [![Testes](https://github.com/DedeDuarte/BP-Telas/actions/workflows/testes.yml/badge.svg)](https://github.com/DedeDuarte/BP-Telas/actions/workflows/testes.yml)
 
-Skill do Claude Code que transforma o roteiro do informativo **Brooklin em Pauta** (IASD Brooklin)
+Skill do Claude (Claude Code e Claude App / claude.ai) que transforma o roteiro do informativo **Brooklin em Pauta** (IASD Brooklin)
 nas telas de lower-third (PNG 1920×1080 transparente) usadas na transmissão.
 
 ## Baixar
@@ -54,7 +54,7 @@ Ao receber o pedido do passo 1:
    (ou gere o seu: `py tools/gerar_zip.py` no Windows, `python3 tools/gerar_zip.py` no Linux;
    o ZIP sai em `dist/`, com a pasta `gerar-telas/` na raiz).
 2. No app: **Configurações → Capacidades**, ligue a execução de código e, em **Skills**, envie o ZIP.
-3. Num chat novo, cole o roteiro e peça as telas. As imagens vêm anexadas na resposta.
+3. Num chat novo, cole o roteiro e peça as telas. O Claude devolve um único `Telas AAAA-MM-DD.zip`: as imagens na raiz e, na pasta `extras/`, o `_preview.jpg` e o `telas.json`.
 
 Para remover: na mesma tela de Skills, desative ou exclua a skill.
 

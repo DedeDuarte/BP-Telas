@@ -16,7 +16,8 @@ baixado nem instalado com pip. Funciona sem internet (ex.: ambiente do Claude Ap
 ## Entrada
 
 Um roteiro em texto, colado na conversa ou em um arquivo. Formato esperado em
-[references/roteiro.md](references/roteiro.md). Exemplo real: [examples/roteiros/2026-10-31.txt](examples/roteiros/2026-10-31.txt).
+[references/roteiro.md](references/roteiro.md). Exemplo real: [examples/roteiros/2026-10-31.txt](examples/roteiros/2026-10-31.txt);
+os textos do [.json](examples/roteiros/2026-10-31.json) correspondente foram revisados pelo usuário e são a referência de estilo.
 
 ## Saída
 
@@ -29,10 +30,9 @@ ponto do roteiro (`NN-slug.png`, na ordem do roteiro), o `telas.json` com os tex
 O script imprime os caminhos finais: **use esses caminhos**, não suponha nenhum. Nesse caso os
 arquivos **não** estão no computador do usuário, e o script gera sozinho `Telas AAAA-MM-DD.zip`
 (na raiz do ZIP ficam só os PNGs, sem pasta interna; o `_preview.jpg` e o `telas.json` vão na
-subpasta `extras/`). Ao final, **confirme que o
-ZIP existe** (`ls`) e **entregue somente esse ZIP** como anexo (um único arquivo; não anexe os PNGs
-soltos).
-Se não houver como anexar, entregue ao menos o `telas.json` para ele rodar no computador dele.
+subpasta `extras/`). Ao final, **confirme que o ZIP existe** (`ls`) e **entregue somente esse ZIP**
+como anexo (um único arquivo; não anexe os PNGs soltos). Se não houver como anexar, entregue ao
+menos o `telas.json` para ele rodar no computador dele.
 
 ## Fluxo
 
@@ -74,8 +74,3 @@ Se não houver como anexar, entregue ao menos o `telas.json` para ele rodar no c
 | `assets/logo-qr.png` | Logo usado no centro dos QR |
 | `assets/fonts/` | Open Sans Bold e ExtraBold (licença em `OFL.txt`) |
 | `scripts/vendor/segno/` | Cópia do gerador de QR `segno` 1.6.6 (licença BSD em `LICENSE`) |
-
-## Exemplos
-
-Os textos de `examples/roteiros/2026-10-31.json` foram revisados pelo usuário e
-são a referência de estilo.

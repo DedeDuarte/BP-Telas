@@ -100,7 +100,8 @@ que mexa em `scripts/`.
 ## Pendências (v0.3.1)
 
 - [ ] **Teste manual no Windows**: instalar pelo link do GitHub no Claude Code, rodar o roteiro
-      `pegadinhas`, conferir com o gabarito, rodar `py -m unittest discover tests` e anotar o resultado.
+      `pegadinhas`, conferir com o gabarito, rodar `py -m unittest discover tests` e anotar o resultado na seção
+      "Histórico" do gabarito.
 - [ ] **Refazer o teste no Claude App com o `gerar-telas-0.3.0.zip`**: conferir o ZIP de entrega
       (PNGs na raiz + `extras/`) e anotar o caminho que o `render.py` imprimiu.
 - [ ] **Ler o QR com um celular de verdade** (os testes usam o `zxing-cpp`; o celular é o que importa
