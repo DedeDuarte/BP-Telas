@@ -13,7 +13,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 - Sem pasta Downloads (app, nuvem), as telas vão para a pasta de saída do ambiente e são
   entregues no chat.
 - Instruções de instalação e remoção no Claude App (upload de ZIP).
-- No app, as telas são entregues em um único `Telas AAAA-MM-DD.zip` (PNGs + `telas.json`); `--zip` força o ZIP em qualquer ambiente.
+- No app, as telas são entregues em um único `Telas AAAA-MM-DD.zip` (só os PNGs; `_preview.jpg` e `telas.json` em `extras/`); `--zip` força o ZIP em qualquer ambiente.
 
 ### Alterado
 

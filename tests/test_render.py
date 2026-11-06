@@ -221,7 +221,7 @@ class ZipTest(unittest.TestCase):
 
 
 class ZipEdicaoTest(unittest.TestCase):
-    """No app (sem Downloads) o render gera um único ZIP com os PNGs e o telas.json."""
+    """No app (sem Downloads) o render gera um único ZIP com os PNGs e, em extras/, o preview e o telas.json."""
 
     def rodar(self, tmp, extra, com_downloads):
         import io
@@ -247,7 +247,8 @@ class ZipEdicaoTest(unittest.TestCase):
             out, _ = self.rodar(tmp, [], com_downloads=False)
             nomes = sorted(zipfile.ZipFile(out / "Telas 2026-11-07.zip").namelist())
         self.assertEqual(nomes, ["Telas 2026-11-07/01-a.png", "Telas 2026-11-07/02-b.png",
-                                 "Telas 2026-11-07/telas.json"])
+                                 "Telas 2026-11-07/extras/_preview.jpg",
+                                 "Telas 2026-11-07/extras/telas.json"])
 
     def test_sem_zip_quando_ha_downloads(self):
         with tempfile.TemporaryDirectory() as tmp:

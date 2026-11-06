@@ -15,7 +15,7 @@ Uso (Windows; no Linux troque `py` por `python3`):
     py scripts\\render.py --pasta 2026-10-31     # cria e mostra a pasta padrão da edição
     py scripts\\render.py telas.json             # gera em Downloads\\Telas <data>\\
     py scripts\\render.py telas.json -o pasta    # gera em outra pasta
-    py scripts\\render.py telas.json --zip       # também gera 'Telas <data>.zip' (PNGs + telas.json)
+    py scripts\\render.py telas.json --zip       # também gera 'Telas <data>.zip' (PNGs; preview e JSON em extras/)
 
 Sem pasta Downloads (Claude App) o ZIP é gerado automaticamente, ao lado da pasta da edição.
 """
@@ -322,15 +322,18 @@ def main(argv=None) -> int:
 
 
 def zipar_edicao(saida: Path) -> Path:
-    """Gera '<pasta>.zip' ao lado da pasta da edição: os PNGs e o telas.json, dentro de '<pasta>/'.
+    """Gera '<pasta>.zip' ao lado da pasta da edição.
 
-    O _preview.jpg fica de fora (é só conferência).
+    Dentro de '<pasta>/' ficam só os PNGs; o _preview.jpg e o telas.json vão para '<pasta>/extras/'.
     """
     destino = saida.with_name(saida.name + ".zip")
-    arquivos = sorted(saida.glob("*.png")) + [saida / "telas.json"]
+    raiz = Path(saida.name)
     with zipfile.ZipFile(destino, "w", zipfile.ZIP_DEFLATED) as z:
-        for arq in arquivos:
-            z.write(arq, (Path(saida.name) / arq.name).as_posix())
+        for arq in sorted(saida.glob("*.png")):
+            z.write(arq, (raiz / arq.name).as_posix())
+        for nome in ("_preview.jpg", "telas.json"):
+            if (saida / nome).is_file():
+                z.write(saida / nome, (raiz / "extras" / nome).as_posix())
     return destino
 
 
