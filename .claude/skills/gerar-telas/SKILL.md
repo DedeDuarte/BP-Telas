@@ -1,6 +1,6 @@
 ---
 name: gerar-telas
-description: Gera as telas (lower-thirds PNG 1920x1080 com fundo transparente) do informativo "Brooklin em Pauta" da IASD Brooklin a partir de um roteiro de avisos, com QR code personalizado (link direto, logo no centro) quando o usuário passar links. Use quando o usuário colar ou apontar um roteiro do Brooklin em Pauta, pedir "telas", "GCs", "lower thirds" ou "artes dos avisos" da igreja, ou quiser transformar os pontos de um roteiro em telas no padrão do Modelo.
+description: Gera as telas (lower-thirds PNG transparentes, com QR code) do "Brooklin em Pauta" a partir de um roteiro de avisos. Use ao receber um roteiro ou pedido de "telas", "GCs" ou "lower thirds".
 ---
 
 # Gerar Telas — Brooklin em Pauta
