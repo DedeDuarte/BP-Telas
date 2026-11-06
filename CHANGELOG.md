@@ -6,6 +6,10 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 
 ## [Não publicado]
 
+### Removido
+
+- Código de download da fonte (`fonts.py`): as fontes já vêm dentro da skill.
+
 ## [0.3.0] - 2026-11-05
 
 > **Atualizando do 0.2.0:** reinstale a skill. No Claude Code, peça ao Claude de novo com o link do

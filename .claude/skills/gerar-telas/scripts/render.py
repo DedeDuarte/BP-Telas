@@ -49,7 +49,7 @@ _SCRIPTS = Path(__file__).resolve().parent
 sys.path.insert(0, str(_SCRIPTS))
 # segno embutido tem prioridade: mesma versão (e mesmo QR) em qualquer ambiente.
 sys.path.insert(0, str(_SCRIPTS / "vendor"))
-from fonts import ensure_font  # noqa: E402
+from fonts import caminho_fonte  # noqa: E402
 
 SKILL_DIR = _SCRIPTS.parent
 ASSETS = SKILL_DIR / "assets"
@@ -234,7 +234,7 @@ def render_bloco_qr(link: str, legenda: str) -> Image.Image:
     ax, ay, _ = QR_AREA
     bloco.alpha_composite(gerar_codigo_qr(link), (ax, ay))
 
-    font, linhas = ajustar_legenda(legenda, ensure_font("ExtraBold"))
+    font, linhas = ajustar_legenda(legenda, caminho_fonte("ExtraBold"))
     x0, y0, x1, y1 = LEGENDA_AREA
     passo = font.size * 1.2
     cy = (y0 + y1) / 2 - passo * (len(linhas) - 1) / 2
@@ -299,7 +299,7 @@ def main(argv=None) -> int:
     registro = saida / "telas.json"
     if args.json.resolve() != registro.resolve():
         shutil.copyfile(args.json, registro)
-    font_path = ensure_font()
+    font_path = caminho_fonte()
 
     erros, geradas = 0, []
     for i, t in enumerate(dados["telas"], 1):
