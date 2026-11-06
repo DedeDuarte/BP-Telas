@@ -13,6 +13,10 @@
 
 ## Tarefas
 
+> 2026-11-05 (noite): `description` encurtada para ≤200 caracteres (limite citado na ajuda do claude.ai),
+> `$OUTPUT_DIR` suportado no render e tarefa 2 concluída (skill versionada: ~680 KB; logo 256 px).
+> Ainda sem confirmação oficial de `/mnt/user-data/outputs` no claude.ai: validar no teste do app.
+
 ### 0. Antes de começar — pendências de validação
 
 - [ ] **Teste no Windows** (combinado para sexta, 2026-11-06): instalar a skill pelo link do
@@ -60,10 +64,10 @@ Medido em 2026-11-05 (pasta `.claude/skills/gerar-telas/`, ~1,5 MB):
 | `examples/telas/*.png` (7) | 540 KB | Mover para `design/` (não são usadas pelo script) |
 | `assets/modelo.png` | 98 KB | Mover para `design/` (referência histórica; o usuário quer manter) |
 
-- [ ] Criar `design/` na raiz (fora da skill = não é instalado) e mover os arquivos acima.
-- [ ] Reduzir `logo-qr.png` e **regerar `qr-visitante.png`** (`scripts/gerar_qr_visitante.py`).
+- [x] Criar `design/` na raiz (fora da skill = não é instalado) e mover os arquivos acima.
+- [x] Reduzir `logo-qr.png` e **regerar `qr-visitante.png`** (`scripts/gerar_qr_visitante.py`).
       Conferir que os testes de leitura de QR continuam passando.
-- [ ] Atualizar referências a esses caminhos em `SKILL.md`, `references/*.md` e `README.md`.
+- [x] Atualizar referências a esses caminhos em `SKILL.md`, `references/*.md` e `README.md`.
 - [x] Instalação com **`git clone --depth 1`** no README (evita baixar o histórico, que cresce a
       cada PNG alterado).
 
