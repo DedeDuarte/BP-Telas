@@ -246,9 +246,7 @@ class ZipEdicaoTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             out, _ = self.rodar(tmp, [], com_downloads=False)
             nomes = sorted(zipfile.ZipFile(out / "Telas 2026-11-07.zip").namelist())
-        self.assertEqual(nomes, ["Telas 2026-11-07/01-a.png", "Telas 2026-11-07/02-b.png",
-                                 "Telas 2026-11-07/extras/_preview.jpg",
-                                 "Telas 2026-11-07/extras/telas.json"])
+        self.assertEqual(nomes, ["01-a.png", "02-b.png", "extras/_preview.jpg", "extras/telas.json"])
 
     def test_sem_zip_quando_ha_downloads(self):
         with tempfile.TemporaryDirectory() as tmp:

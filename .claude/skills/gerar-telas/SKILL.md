@@ -28,7 +28,7 @@ ponto do roteiro (`NN-slug.png`, na ordem do roteiro), o `telas.json` com os tex
 `$OUTPUT_DIR`, `/mnt/user-data/outputs/` ou a pasta atual, criando `Telas AAAA-MM-DD/` dentro dela.
 O script imprime os caminhos finais: **use esses caminhos**, não suponha nenhum. Nesse caso os
 arquivos **não** estão no computador do usuário, e o script gera sozinho `Telas AAAA-MM-DD.zip`
-(dentro de `Telas AAAA-MM-DD/` ficam só os PNGs; o `_preview.jpg` e o `telas.json` vão na
+(na raiz do ZIP ficam só os PNGs, sem pasta interna; o `_preview.jpg` e o `telas.json` vão na
 subpasta `extras/`). Ao final, **confirme que o
 ZIP existe** (`ls`) e **entregue somente esse ZIP** como anexo (um único arquivo; não anexe os PNGs
 soltos).

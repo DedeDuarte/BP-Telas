@@ -324,10 +324,11 @@ def main(argv=None) -> int:
 def zipar_edicao(saida: Path) -> Path:
     """Gera '<pasta>.zip' ao lado da pasta da edição.
 
-    Dentro de '<pasta>/' ficam só os PNGs; o _preview.jpg e o telas.json vão para '<pasta>/extras/'.
+    Na raiz do ZIP ficam só os PNGs; o _preview.jpg e o telas.json vão para 'extras/'. Sem pasta
+    interna: ao extrair, o próprio nome do ZIP já dá a pasta (evita pasta dentro de pasta).
     """
     destino = saida.with_name(saida.name + ".zip")
-    raiz = Path(saida.name)
+    raiz = Path()
     with zipfile.ZipFile(destino, "w", zipfile.ZIP_DEFLATED) as z:
         for arq in sorted(saida.glob("*.png")):
             z.write(arq, (raiz / arq.name).as_posix())
