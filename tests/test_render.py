@@ -1,7 +1,10 @@
 """Testes do renderizador de telas. Rodar da raiz: py -m unittest discover tests"""
+import os
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / ".claude" / "skills" / "gerar-telas" / "scripts"))
@@ -172,6 +175,89 @@ class TestQR(unittest.TestCase):
             self.tela(LINKS[0], legenda="")
         with self.assertRaises(ValueError):
             self.tela(LINKS[0], legenda="texto muito comprido " * 6)
+
+
+
+
+class PastaBaseTest(unittest.TestCase):
+    """Sem Downloads (ambiente do app): $OUTPUT_DIR, depois /mnt/user-data/outputs, depois a pasta atual."""
+
+    def test_usa_output_dir_sem_downloads(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            inexistente = Path(tmp) / "nao-existe"
+            with mock.patch.object(render, "pasta_downloads", return_value=inexistente), \
+                    mock.patch.dict(os.environ, {"OUTPUT_DIR": tmp}):
+                self.assertEqual(render.pasta_base(), Path(tmp))
+
+    def test_downloads_tem_prioridade_sobre_output_dir(self):
+        with tempfile.TemporaryDirectory() as dl, tempfile.TemporaryDirectory() as out:
+            with mock.patch.object(render, "pasta_downloads", return_value=Path(dl)), \
+                    mock.patch.dict(os.environ, {"OUTPUT_DIR": out}):
+                self.assertEqual(render.pasta_base(), Path(dl))
+
+    def test_output_dir_inexistente_e_ignorado(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            falso = Path(tmp) / "falso"
+            with mock.patch.object(render, "pasta_downloads", return_value=falso), \
+                    mock.patch.object(render, "SAIDA_APP", falso), \
+                    mock.patch.dict(os.environ, {"OUTPUT_DIR": str(falso)}):
+                self.assertEqual(render.pasta_base(), Path.cwd())
+
+
+class ZipTest(unittest.TestCase):
+    """O ZIP da skill tem gerar-telas/ na raiz, SKILL.md dentro e nada de cache."""
+
+    def test_estrutura_do_zip(self):
+        import zipfile
+        sys.path.insert(0, str(ROOT / "tools"))
+        import gerar_zip
+        with tempfile.TemporaryDirectory() as tmp:
+            destino = gerar_zip.gerar_zip(Path(tmp) / "gerar-telas-teste.zip")
+            nomes = zipfile.ZipFile(destino).namelist()
+        self.assertIn("gerar-telas/SKILL.md", nomes)
+        self.assertTrue(all(n.startswith("gerar-telas/") for n in nomes))
+        self.assertFalse([n for n in nomes if "__pycache__" in n or n.endswith(".pyc")])
+        self.assertTrue(all("\\" not in n for n in nomes))
+
+
+class ZipEdicaoTest(unittest.TestCase):
+    """No app (sem Downloads) o render gera um único ZIP com os PNGs e, em extras/, o preview e o telas.json."""
+
+    def rodar(self, tmp, extra, com_downloads):
+        import io
+        import json
+        from contextlib import redirect_stdout
+        tmp = Path(tmp)
+        js = tmp / "telas.json"
+        js.write_text(json.dumps({"data": "2026-11-07", "telas": [
+            {"arquivo": "01-a", "titulo": "A", "corpo": "Texto curto."},
+            {"arquivo": "02-b", "titulo": "B", "corpo": "Outro texto."}]}), encoding="utf-8")
+        dl = tmp / "dl" if com_downloads else tmp / "nao-existe"
+        dl.mkdir(exist_ok=True) if com_downloads else None
+        out = tmp / "out"
+        out.mkdir()
+        with mock.patch.object(render, "pasta_downloads", return_value=dl), \
+                mock.patch.dict(os.environ, {"OUTPUT_DIR": str(out)}), redirect_stdout(io.StringIO()):
+            render.main([str(js)] + extra)
+        return out, dl
+
+    def test_zip_automatico_sem_downloads(self):
+        import zipfile
+        with tempfile.TemporaryDirectory() as tmp:
+            out, _ = self.rodar(tmp, [], com_downloads=False)
+            nomes = sorted(zipfile.ZipFile(out / "Telas 2026-11-07.zip").namelist())
+        self.assertEqual(nomes, ["01-a.png", "02-b.png", "extras/_preview.jpg", "extras/telas.json"])
+
+    def test_sem_zip_quando_ha_downloads(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _, dl = self.rodar(tmp, [], com_downloads=True)
+            self.assertFalse(list(dl.glob("*.zip")))
+            self.assertTrue((dl / "Telas 2026-11-07" / "01-a.png").is_file())
+
+    def test_flag_zip_forca_o_zip(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _, dl = self.rodar(tmp, ["--zip"], com_downloads=True)
+            self.assertTrue((dl / "Telas 2026-11-07.zip").is_file())
 
 
 if __name__ == "__main__":

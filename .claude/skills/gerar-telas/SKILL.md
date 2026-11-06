@@ -1,6 +1,6 @@
 ---
 name: gerar-telas
-description: Gera as telas (lower-thirds PNG 1920x1080 com fundo transparente) do informativo "Brooklin em Pauta" da IASD Brooklin a partir de um roteiro de avisos, com QR code personalizado (link direto, logo no centro) quando o usuário passar links. Use quando o usuário colar ou apontar um roteiro do Brooklin em Pauta, pedir "telas", "GCs", "lower thirds" ou "artes dos avisos" da igreja, ou quiser transformar os pontos de um roteiro em telas no padrão do Modelo.
+description: Gera as telas (lower-thirds PNG transparentes, com QR code) do "Brooklin em Pauta" a partir de um roteiro de avisos. Use ao receber um roteiro ou pedido de "telas", "GCs" ou "lower thirds".
 ---
 
 # Gerar Telas — Brooklin em Pauta
@@ -24,10 +24,15 @@ Por padrão, na pasta **Downloads** do usuário: `Downloads/Telas AAAA-MM-DD/`, 
 ponto do roteiro (`NN-slug.png`, na ordem do roteiro), o `telas.json` com os textos usados e o
 `_preview.jpg` de conferência. Se o usuário pedir outra pasta, use `-o "<pasta>"`.
 
-**Sem pasta Downloads** (Claude App, claude.ai, sessões na nuvem): o script usa
-`/mnt/user-data/outputs/Telas AAAA-MM-DD/` se existir, senão a pasta atual. Nesse caso os arquivos
-**não** estão no computador do usuário: ao final, **entregue os PNGs** (e o `_preview.jpg`) pelo
-recurso de compartilhar/anexar arquivos do ambiente, para ele baixar.
+**Sem pasta Downloads** (Claude App, claude.ai, sessões na nuvem): o script usa, nesta ordem,
+`$OUTPUT_DIR`, `/mnt/user-data/outputs/` ou a pasta atual, criando `Telas AAAA-MM-DD/` dentro dela.
+O script imprime os caminhos finais: **use esses caminhos**, não suponha nenhum. Nesse caso os
+arquivos **não** estão no computador do usuário, e o script gera sozinho `Telas AAAA-MM-DD.zip`
+(na raiz do ZIP ficam só os PNGs, sem pasta interna; o `_preview.jpg` e o `telas.json` vão na
+subpasta `extras/`). Ao final, **confirme que o
+ZIP existe** (`ls`) e **entregue somente esse ZIP** como anexo (um único arquivo; não anexe os PNGs
+soltos).
+Se não houver como anexar, entregue ao menos o `telas.json` para ele rodar no computador dele.
 
 ## Fluxo
 
@@ -58,7 +63,7 @@ recurso de compartilhar/anexar arquivos do ambiente, para ele baixar.
      explique o erro ao usuário.
 7. **Conferir visualmente** abrindo `_preview.jpg` (todas as telas sobre fundo cinza — sobre
    branco a faixa branca do corpo fica invisível) e informar ao usuário a pasta gerada — ou,
-   sem pasta Downloads, entregar os arquivos (ver **Saída**).
+   sem pasta Downloads, entregar o ZIP (ver **Saída**).
 
 ## Assets
 
@@ -69,10 +74,9 @@ recurso de compartilhar/anexar arquivos do ambiente, para ele baixar.
 | `assets/logo-qr.png` | Logo usado no centro dos QR |
 | `assets/fonts/` | Open Sans Bold e ExtraBold (licença em `OFL.txt`) |
 | `scripts/vendor/segno/` | Cópia do gerador de QR `segno` 1.6.6 (licença BSD em `LICENSE`) |
-| `assets/modelo.png` | **Só referência histórica — não use na skill.** O script desenha tudo sozinho. |
 
 ## Exemplos
 
-`examples/telas/` tem telas reais já produzidas. Consulte-as para calibrar tom, tamanho de texto e
-quebra de linha. Os textos de `examples/roteiros/2026-10-31.json` foram revisados pelo usuário e
+As telas reais de referência ficam em `design/telas/` na raiz do repositório (não vão na skill instalada).
+Os textos de `examples/roteiros/2026-10-31.json` foram revisados pelo usuário e
 são a referência de estilo.

@@ -1,6 +1,6 @@
 # Especificação visual
 
-Medidas extraídas dos PNGs de `examples/telas/` e de `assets/modelo.png`.
+Medidas extraídas dos PNGs de `design/telas/` e de `design/modelo.png` (só no repositório).
 
 ## Canvas
 

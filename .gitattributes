@@ -1,0 +1,11 @@
+# Fora do "Source code (zip/tar.gz)" que o GitHub anexa aos releases (git archive).
+# Não afeta o git clone: só deixa o ZIP automático com o que interessa (a skill, README, LICENSE).
+.github/ export-ignore
+tests/ export-ignore
+design/ export-ignore
+tools/ export-ignore
+roteiros/ export-ignore
+plano-0.3.0.md export-ignore
+CLAUDE.md export-ignore
+requirements-dev.txt export-ignore
+.gitattributes export-ignore

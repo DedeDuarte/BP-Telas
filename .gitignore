@@ -3,3 +3,4 @@ roteiros/*
 __pycache__/
 .venv/
 saida/
+dist/

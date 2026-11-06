@@ -1,7 +1,7 @@
 # Tela padrão e regras de redação
 
 Existe **um único tipo de tela**: título na barra azul + corpo em texto azul + bloco QR
-(ver [design-spec.md](design-spec.md)). Exemplos: todos os PNGs de `examples/telas/`.
+(ver [design-spec.md](design-spec.md)). Exemplos: os PNGs de `design/telas/` (só no repositório).
 
 ## Quais pontos do roteiro viram tela
 
