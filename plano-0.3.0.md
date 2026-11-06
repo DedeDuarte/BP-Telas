@@ -1,7 +1,10 @@
-# Plano — v0.3.0
+# Plano — v0.3.0 (publicada) e próximos passos
 
 > Documento de retomada. Escrito em 2026-11-05, logo após o release da v0.2.0, para que
 > qualquer sessão futura (humana ou do Claude) consiga continuar sem o histórico do chat.
+>
+> **Status (2026-11-05, noite): a v0.3.0 foi publicada** (tag `v0.3.0` em `ef27918`, CI verde nos dois
+> sistemas, `gerar-telas-0.3.0.zip` anexado). O que sobrou está em **Pendências para a v0.3.1**, no fim.
 
 ## Objetivo da v0.3.0
 
@@ -26,8 +29,9 @@
 - [x] **Teste no Claude App** (2026-11-05): a redação/tabela acertou todas as pegadinhas; o render
       falhou porque o ambiente não tinha `segno` nem internet (download da fonte deu 403). Pillow 12.3.0
       já estava instalado. → resolvido embutindo fontes e segno (tarefa 1). Testar de novo com o ZIP novo.
-- [ ] **Testar de novo no Claude App** com um ZIP da skill atual (fontes e segno embutidos):
-      esperado gerar as telas e entregá-las anexadas no chat.
+- [x] **Testar de novo no Claude App** com um ZIP da skill atual (fontes e segno embutidos):
+      funcionou; as telas foram geradas e entregues em um único ZIP. Depois desse teste, o ZIP de
+      entrega perdeu a pasta interna (ver `96af1e8`): **refazer o teste com o ZIP do release**.
 - [ ] Ler o QR das telas com o **celular de verdade** (o leitor dos testes é o zxing-cpp; celular
       é o que importa na transmissão).
 
@@ -37,9 +41,12 @@ Contexto: no app, skills rodam num ambiente Linux isolado da Anthropic (code exe
 Não há pasta Downloads do usuário, a instalação é por **upload de ZIP** (Configurações →
 Capacidades → Skills) e o acesso à internet/pip pode estar bloqueado.
 
-- [ ] (parcial — confirmado na prática: sem rede, Pillow presente) **Confirmar na documentação oficial** como skills rodam no app: pacotes pré-instalados
-      (Pillow sim? segno?), acesso à rede, onde salvar arquivos para o usuário baixar.
-      Não implementar no chute.
+- [x] **Confirmar na documentação oficial** como skills rodam no app (pesquisa de 2026-11-05):
+      a rede depende do plano/configuração (Free/Pro/Max com pacotes liberados; Team/Enterprise
+      desligada por padrão); o Pillow é pré-instalado, `segno` e fontes não constam (por isso foram
+      embutidos); skills não sincronizam entre superfícies; ZIP com a pasta da skill na raiz e nome
+      igual ao `name`; a ajuda cita `description` de até 200 caracteres. **Não confirmado:** o caminho
+      `/mnt/user-data/outputs` (o render usa `$OUTPUT_DIR` primeiro, depois esse caminho).
 - [x] **Embutir as fontes** Open Sans Bold e ExtraBold em `assets/fonts/` (hoje são baixadas e
       ignoradas pelo git). Incluir `OFL.txt` (licença SIL OFL 1.1 exige). Manter `fonts.py` só como
       fallback ou removê-lo. Atualizar `.gitignore`.
@@ -50,7 +57,7 @@ Capacidades → Skills) e o acesso à internet/pip pode estar bloqueado.
       arquivos ao usuário nesse caso.
 - [x] **Comandos no `SKILL.md`**: hoje mostram `py` (Windows) e `python3` (Linux). No app é sempre
       `python3`. Deixar claro.
-- [ ] **ZIP da skill em cada release**: anexar `gerar-telas-X.Y.Z.zip` aos releases do GitHub
+- [x] **ZIP da skill em cada release**: anexar `gerar-telas-X.Y.Z.zip` aos releases do GitHub
       (manualmente ou com GitHub Actions disparado pela tag). README com o passo a passo de
       instalação/desinstalação no app.
 
@@ -73,10 +80,30 @@ Medido em 2026-11-05 (pasta `.claude/skills/gerar-telas/`, ~1,5 MB):
 
 ### 3. Release
 
-- [ ] CHANGELOG: mover "Não publicado" → `[0.3.0] - AAAA-MM-DD` + links de comparação no rodapé.
-- [ ] Se a forma de instalar mudar, aviso de atualização no topo da seção (como na 0.2.0).
-- [ ] Push → esperar CI verde (Windows e Linux) → `git tag -a v0.3.0` → `gh release create`.
-- [ ] Notas do release: novidades, aviso de atualização, limitações conhecidas.
+- [x] CHANGELOG: mover "Não publicado" → `[0.3.0] - AAAA-MM-DD` + links de comparação no rodapé.
+- [x] Se a forma de instalar mudar, aviso de atualização no topo da seção (como na 0.2.0).
+- [x] Push → esperar CI verde (Windows e Linux) → `git tag -a v0.3.0` → `gh release create`.
+- [x] Notas do release: novidades, aviso de atualização, limitações conhecidas.
+
+### Pendências para a v0.3.1
+
+- [ ] **Teste manual no Windows** (item da seção 0): instalar pelo link do GitHub, rodar o roteiro
+      `pegadinhas`, conferir com o gabarito e anotar no "Histórico" do gabarito.
+- [ ] **Refazer o teste no Claude App com o `gerar-telas-0.3.0.zip` do release**: conferir que o ZIP
+      de entrega vem só com os PNGs na raiz e `extras/` (preview + JSON), e anotar o caminho que o
+      `render.py` imprimiu (confirma `$OUTPUT_DIR` ou `/mnt/user-data/outputs`).
+- [ ] **Ler o QR com um celular de verdade** (seção 0).
+- [ ] Se algo falhar nos testes: corrigir, atualizar o CHANGELOG e publicar a v0.3.1 (o workflow
+      `release-zip.yml` anexa o ZIP sozinho quando o release é publicado).
+
+### Como publicar uma versão (aprendido na 0.3.0)
+
+1. CHANGELOG fechado e CI verde na `main`.
+2. `git tag -a vX.Y.Z -m "vX.Y.Z"` e `git push origin vX.Y.Z`.
+3. `gh release create vX.Y.Z --title "vX.Y.Z" --notes-file <notas>` (esta versão do `gh` não tem
+   `--verify-tag`). O workflow anexa `gerar-telas-X.Y.Z.zip`; conferir em Assets.
+4. O "Source code" automático do GitHub não pode ser removido; tentou-se enxugá-lo com
+   `.gitattributes` (`export-ignore`), mas a decisão final foi deixá-lo completo.
 
 ### Ideias para depois (fora da 0.3.0)
 
@@ -93,7 +120,8 @@ Medido em 2026-11-05 (pasta `.claude/skills/gerar-telas/`, ~1,5 MB):
 - Skill `gerar-telas` (em `.claude/skills/gerar-telas/`) que transforma o roteiro do informativo
   **Brooklin em Pauta** (IASD Brooklin) em telas PNG 1920×1080 transparentes (lower-thirds).
 - Fluxo: roteiro → Claude redige título/corpo/QR → **usuário aprova a tabela** → JSON →
-  `scripts/render.py` → PNGs em `Downloads/Telas AAAA-MM-DD/` (+ `telas.json` + `_preview.jpg`).
+  `scripts/render.py` → PNGs em `Downloads/Telas AAAA-MM-DD/` (+ `telas.json` + `_preview.jpg`). No Claude App (sem Downloads)
+  o render também gera `Telas AAAA-MM-DD.zip` (PNGs na raiz; preview e JSON em `extras/`).
 - Repositório: https://github.com/DedeDuarte/BP-Telas (público, MIT, inclusive o logo — decisão
   do usuário). Releases: v0.1.0 e v0.2.0 (ambas em 2026-11-05).
 
