@@ -100,6 +100,11 @@ py -m pip install -r requirements-dev.txt
 py -m unittest discover tests
 ```
 
+## Planos futuros
+
+- **0.4.0:** gerar também a **thumbnail do YouTube** da edição.
+- **0.5.0 ou mais:** gerar o **vídeo de introdução**.
+
 ## Licença
 
 [MIT](LICENSE) — inclui o código e as imagens do repositório (logo e telas de exemplo).
