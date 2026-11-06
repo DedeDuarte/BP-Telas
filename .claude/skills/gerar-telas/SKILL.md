@@ -77,6 +77,5 @@ Se não houver como anexar, entregue ao menos o `telas.json` para ele rodar no c
 
 ## Exemplos
 
-As telas reais de referência ficam em `design/telas/` na raiz do repositório (não vão na skill instalada).
 Os textos de `examples/roteiros/2026-10-31.json` foram revisados pelo usuário e
 são a referência de estilo.

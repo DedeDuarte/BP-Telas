@@ -70,12 +70,13 @@ BP-Telas/
 ├── .claude/skills/gerar-telas/     ← a skill (é isto que é instalado)
 │   ├── SKILL.md                    ← instruções principais (fluxo)
 │   ├── requirements.txt
-│   ├── scripts/                    ← render.py (gera as telas) e fonts.py (baixa a fonte)
+│   ├── scripts/                    ← render.py (gera as telas) e fonts.py (caminho das fontes)
 │   ├── assets/                     ← logo, fontes e bloco de QR
 │   ├── references/                 ← especificação visual, regras de redação, formato do roteiro
 │   └── examples/                   ← roteiro e JSON de exemplo
 ├── tools/                          ← gerar_zip.py (ZIP para o Claude App)
-├── design/                         ← telas e modelo de referência (não são instalados)
+├── design/                         ← telas e modelo originais, para comparar com o que a skill gera
+│                                     (não são instalados; o QR e algumas regras de texto mudaram depois deles)
 ├── tests/                          ← testes do renderizador
 └── roteiros/                       ← rascunhos locais (ignorados pelo git)
 ```

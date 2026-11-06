@@ -1,6 +1,6 @@
 # Especificação visual
 
-Medidas extraídas dos PNGs de `design/telas/` e de `design/modelo.png` (só no repositório).
+Medidas extraídas dos PNGs originais (em `design/` no repositório; não vão na skill instalada).
 
 ## Canvas
 
@@ -19,8 +19,8 @@ Medidas extraídas dos PNGs de `design/telas/` e de `design/modelo.png` (só no 
 
 ## Tipografia
 
-- Fonte: **Open Sans Bold**, sempre em CAIXA ALTA. Obtida por `scripts/fonts.py`
-  (`ensure_font()`), que baixa para `assets/fonts/` na primeira execução.
+- Fonte: **Open Sans Bold**, sempre em CAIXA ALTA. Vem dentro da skill, em
+  `assets/fonts/` (carregada por `scripts/fonts.py`).
 - Título (sobre a barra): branco, ~36 px de altura de versal.
 - Corpo (sobre transparente): azul, 26–34 px (o maior que couber em 2 linhas), entrelinha 1,38 × tamanho.
 
