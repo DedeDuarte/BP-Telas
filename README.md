@@ -5,6 +5,13 @@
 Skill do Claude Code que transforma o roteiro do informativo **Brooklin em Pauta** (IASD Brooklin)
 nas telas de lower-third (PNG 1920×1080 transparente) usadas na transmissão.
 
+## Baixar
+
+- **Claude App / claude.ai:** na [última versão](https://github.com/DedeDuarte/BP-Telas/releases/latest),
+  baixe o arquivo `gerar-telas-X.Y.Z.zip` (em **Assets**; ignore os "Source code") e envie-o como skill.
+  Passo a passo em [Instalação no Claude App](#instalação-no-claude-app--claudeai).
+- **Claude Code:** veja [Como usar](#como-usar).
+
 ## Como usar
 
 1. **Instale a skill** — no Claude Code, peça:
