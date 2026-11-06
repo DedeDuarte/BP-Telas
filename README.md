@@ -44,7 +44,8 @@ Ao receber o pedido do passo 1:
 ## Instalação no Claude App / claude.ai
 
 1. Baixe o `gerar-telas-X.Y.Z.zip` da [página de releases](https://github.com/DedeDuarte/BP-Telas/releases)
-   (ou compacte a pasta `.claude/skills/gerar-telas/`).
+   (ou gere o seu: `py tools/gerar_zip.py` no Windows, `python3 tools/gerar_zip.py` no Linux;
+   o ZIP sai em `dist/`, com a pasta `gerar-telas/` na raiz).
 2. No app: **Configurações → Capacidades**, ligue a execução de código e, em **Skills**, envie o ZIP.
 3. Num chat novo, cole o roteiro e peça as telas. As imagens vêm anexadas na resposta.
 
@@ -66,6 +67,7 @@ BP-Telas/
 │   ├── assets/                     ← logo, fontes e bloco de QR
 │   ├── references/                 ← especificação visual, regras de redação, formato do roteiro
 │   └── examples/                   ← roteiro e JSON de exemplo
+├── tools/                          ← gerar_zip.py (ZIP para o Claude App)
 ├── design/                         ← telas e modelo de referência (não são instalados)
 ├── tests/                          ← testes do renderizador
 └── roteiros/                       ← rascunhos locais (ignorados pelo git)

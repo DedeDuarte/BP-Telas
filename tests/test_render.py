@@ -204,5 +204,21 @@ class PastaBaseTest(unittest.TestCase):
                 self.assertEqual(render.pasta_base(), Path.cwd())
 
 
+class ZipTest(unittest.TestCase):
+    """O ZIP da skill tem gerar-telas/ na raiz, SKILL.md dentro e nada de cache."""
+
+    def test_estrutura_do_zip(self):
+        import zipfile
+        sys.path.insert(0, str(ROOT / "tools"))
+        import gerar_zip
+        with tempfile.TemporaryDirectory() as tmp:
+            destino = gerar_zip.gerar_zip(Path(tmp) / "gerar-telas-teste.zip")
+            nomes = zipfile.ZipFile(destino).namelist()
+        self.assertIn("gerar-telas/SKILL.md", nomes)
+        self.assertTrue(all(n.startswith("gerar-telas/") for n in nomes))
+        self.assertFalse([n for n in nomes if "__pycache__" in n or n.endswith(".pyc")])
+        self.assertTrue(all("\\" not in n for n in nomes))
+
+
 if __name__ == "__main__":
     unittest.main()
