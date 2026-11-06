@@ -63,9 +63,10 @@ BP-Telas/
 │   ├── SKILL.md                    ← instruções principais (fluxo)
 │   ├── requirements.txt
 │   ├── scripts/                    ← render.py (gera as telas) e fonts.py (baixa a fonte)
-│   ├── assets/                     ← logo e bloco de QR (modelo.png é só referência)
+│   ├── assets/                     ← logo, fontes e bloco de QR
 │   ├── references/                 ← especificação visual, regras de redação, formato do roteiro
-│   └── examples/                   ← roteiro, JSON e telas reais de referência
+│   └── examples/                   ← roteiro e JSON de exemplo
+├── design/                         ← telas e modelo de referência (não são instalados)
 ├── tests/                          ← testes do renderizador
 └── roteiros/                       ← rascunhos locais (ignorados pelo git)
 ```

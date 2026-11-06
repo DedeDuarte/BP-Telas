@@ -71,10 +71,9 @@ Se não houver como anexar, entregue ao menos o `telas.json` para ele rodar no c
 | `assets/logo-qr.png` | Logo usado no centro dos QR |
 | `assets/fonts/` | Open Sans Bold e ExtraBold (licença em `OFL.txt`) |
 | `scripts/vendor/segno/` | Cópia do gerador de QR `segno` 1.6.6 (licença BSD em `LICENSE`) |
-| `assets/modelo.png` | **Só referência histórica — não use na skill.** O script desenha tudo sozinho. |
 
 ## Exemplos
 
-`examples/telas/` tem telas reais já produzidas. Consulte-as para calibrar tom, tamanho de texto e
-quebra de linha. Os textos de `examples/roteiros/2026-10-31.json` foram revisados pelo usuário e
+As telas reais de referência ficam em `design/telas/` na raiz do repositório (não vão na skill instalada).
+Os textos de `examples/roteiros/2026-10-31.json` foram revisados pelo usuário e
 são a referência de estilo.
